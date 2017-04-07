@@ -1,17 +1,33 @@
 Package: CMEA
+
 Title: CMEA: An R package for Systematic Exploration of Single-Cell Morphological Phenotypes from Transcriptomic Profile
+
 Version: 0.99.0
+
 Authors@R: c(person("Isar", "Nassiri", email = "isar_nassiri@urmc.rochester.edu", role = c("aut", "cre")))
+
 Description: CMEA is a tool for cell morphology enrichment analysis and link transcriptomic alterations with cell morphological phenotypes. In our approach we (1) map the transcriptomic profile of a query against the L1000 LINCS repository, (2) create a gene set repository for cell morphological features (CM), (3) identify the top CMs associated with alterations and analyze their direction of regulation, and (4) model a regulatory network of cell morphological phenotypes. 
+
 Depends: R (>= 3.3.1), plotly, clusterSim, netbenchmark, qgraph, data.table, glmnet, PANR, Hmisc, caret, arules, arulesViz, vegan, ggplot2, gridExtra, plotrix, netbenchmark, igraph
+
 License: GPL-2
+
 Encoding: UTF-8
+
 LazyData: true
+
 RoxygenNote: 5.0.1.9000
+
 biocViews: Software, StatisticalMethod, Regression
+
 Suggests: knitr, rmarkdown
+
 VignetteBuilder: knitr
+
 NeedsCompilation: no
+
 Packaged: 2016-06-02 15:29:15 UTC; inassiri1
+
 Author: Isar Nassiri [aut, cre], Matthew McCall [aut, cre]
-Maintainer: Isar Nassiri <isar_nassiri@urmc.rochester.edu> 
+
+Maintainer: Isar Nassiri <isar_nassiri@urmc.rochester.edu>
