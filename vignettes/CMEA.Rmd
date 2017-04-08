@@ -1,0 +1,89 @@
+---
+title: "CMEA: An R package for Cell Morphological Enrichment Analysis from Transcriptomic Profile"
+author: "Isar Nassiri, Matthew McCall"
+date: "March 31, 2017"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Systematic Exploration of Single-Cell Morphological Phenotypes from Transcriptomic Profile\}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## 1. Introduction
+
+Single-cell morphological phenotypes, including shape, size, intensity, and texture of cellular compartments have been shown to change in response to perturbations. Image-based morphological profiling has been used to associate phenotypic changes with alterations in cellular function and to infer molecular mechanisms of action. Recently, the LINCS Project has measured gene expression (via the L1000 platform) and performed morphological profiling. This reference of high throughput profiles provides an opportunity to study the interdependence between transcription and cell morphology. Previous methods to investigate cell phenotypes have focused on targeting candidate genes as components of known pathways, RNAi morphological profiling, and implementation of databases of morphological defects; however, these methods do not provide an explicit model to link transcriptomic changes with corresponding alterations in morphology. To address this, we propose a cell morphology enrichment analysis to link transcriptomic alterations with cell morphological phenotypes. In our approach we (1) map the transcriptomic profile of a query against the L1000 LINCS repository, (2) create a gene set repository for cell morphological features (CM), (3) identify the top CMs associated with alterations and analyze their direction of regulation, and (4) model a regulatory network of cell morphological phenotypes. For a new transcriptomic query, our approach uses the association between gene set expression and morphological features to predict associated changes in cellular morphology. We demonstrate the utility of our pipeline by applying it to expression changes in human bone osteosarcoma cells.
+
+## 2. Input data
+
+Cellmorphenricha uses two input files including the the transcriptomic and single cell morphological profiles of human bone osteosarcoma cells (U-2 OS cells) in response to the 9515 drugs or small molecule compounds from the library of network-based cellular signatures (LINCS) database (http://lincscloud.org).
+
+## 3. Mapping query transcriptomic profile against the reference repository
+
+We use the Mapping() function to map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) and detect similar profiles (s). 
+
+	Example of application: identification of similar drugs with transcription profile of "BRD-K37798499"
+
+	install("Cellmorphenricha")
+	library(Cellmorphenricha)
+	Mapping("BRD-K37798499")
+
+## 4. Cell morphology enrichment analysis
+
+For cell morphology enrichment analysis we use the Cell_Morphology_Enrichment_Analysis() function for variable selection and fit a sparse model based on the strong correlation between the transcription and single-cell morphological profiles. We present the results of cell morphology enrichment analysis as cross-tabulation of landmark genes, and single-cell morphological features including the direction of effects (up or down regulation). 
+
+
+   Example of application:
+
+   install("Cellmorphenricha")
+   library(Cellmorphenricha)  
+   Mapping("BRD-K37798499")   
+   Cell_Morphology_Enrichment_Analysis(10)  
+   #10 is the number of first top cell morphological features, and can be between the 1 to 812.
+
+## 5. Ranking Cell Morphological Features
+
+We use the Ranking_Cell_Morphological_features() function to consider the connectivity and centrality of features in Cosine similarity network of image-based cell morphological profile to rank cell morphological features. We present the first top N cell morphological features, ranked based on SCS as a questionnaire graph.
+   
+   Example of application:
+   
+   install("Cellmorphenricha")
+   library(Cellmorphenricha)
+   Mapping("BRD-K37798499")
+   Ranking_Cell_Morphological_features(20) 
+   #20 is number of first top cell morphological features, ranked based on SCS 
+   
+## 6. Modeling of cell morphological features based on the transcriptomic profile 
+
+We use the least absolute shrinkage and selection operator (LASSO) to fit a regression model for changes in cell morphological and gene expression profiles in response to the treatment with specific drug or small compound molecule. We calculate the performance measures based on the outputs of leave-one-out cross validation (LOOCV).
+
+   Example of application: 
+    
+   install("Cellmorphenricha")
+   library(Cellmorphenricha)   
+   Mapping("BRD-K37798499")
+   Modeling_morphological_features(10,20)   
+   #10 is the number of features and 20 is number of randomly selected drugs from reference backend repository
+   
+## 7. Association rule mining of transcriptomic and cell morphological profiles
+
+We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes. For inference of gene regulatory network of cell morphological phenotypes, first, we use the arules R package to mine association rules between genes based on the cell morphological gene sets. Next, we apply Context Likelihood (CLR) network inference algorithm to identify the interactions between genes based on the transcriptomic profiles.  
+   
+   Example of application: 
+    
+   install("Cellmorphenricha")
+   library(Cellmorphenricha)  
+   Mapping("BRD-K37798499")   
+   GRN(10, 0.2, 0.9) 
+   #10 is the number of features, 0.2 and 0.9 are support and confidence parameters, respectively.
+
+## 8. We demonstrate the application of CMEA package by using the transcriptomic and single cell morphological profiles of human bone osteosarcoma cells (U-2 OS cells) in response to the 9515 drugs or small molecule compounds from the library of network-based cellular signatures (LINCS) database (http://lincscloud.org).  
+
+	Example of application:
+	#Load the transcriptomic profile in workspace
+	data(Transcriptomic_Profile_Complete)
+	#Load the single-cell morphological profile in workspace
+	data(Cell_Morphology_Profile_Complete)
+	Mapping("BRD-K37798499")
+	
+## 9. Reference
+Wawer, M.J., Jaramillo, D.E., Dancik, V., Fass, D.M., Haggarty, S.J., Shamji, A.F., Wagner, B.K., Schreiber, S.L. and Clemons, P.A. (2014) Automated Structure-Activity Relationship Mining: Connecting Chemical Structure to Biological Profiles. Journal of Biomolecular Screening, 19, 738-748.   
