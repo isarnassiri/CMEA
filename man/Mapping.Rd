@@ -4,10 +4,7 @@
 \alias{Mapping}
 \title{{Mapping query transcriptomic profile against the reference repository}}
 \usage{
-Mapping(input)
-}
-\arguments{
-\item{input:}{A character, name of a drug or small compound molecule (e.g. "BRD-K37798499").}
+Mapping()
 }
 \description{
 {We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) to detect similarities among these profiles (s).}
@@ -16,7 +13,8 @@ Mapping(input)
 {
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
-Mapping("BRD-K37798499") 
+input="BRD-K37798499"
+Mapping() 
 }
 }
 \author{

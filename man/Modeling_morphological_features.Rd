@@ -4,10 +4,7 @@
 \alias{Modeling_morphological_features}
 \title{{Modeling of cell morphological features based on the transcriptomic profile.}}
 \usage{
-Modeling_morphological_features(Number_features, Number_profiles)
-}
-\arguments{
-\item{An}{integer: Number_features, number of cell morphological phenotype; Number_profiles: An integer, number of profiles (test sets).}
+Modeling_morphological_features()
 }
 \description{
 {We leverage the significant cross correlation between the cell morphological feature and related transcriptomic profiles to predict previously unrecognized cell morphological states for transcriptomic of experimental perturbation of interest.
