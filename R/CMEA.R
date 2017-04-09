@@ -1,35 +1,32 @@
 #' @export
-#' @import plotly
 #' @import clusterSim
 #' @import netbenchmark
 #' @import qgraph
 #' @import data.table
 #' @import glmnet
-#' @import PANR
-#' @import Hmisc
-#' @import caret
-#' @import arules
-#' @import arulesViz
 #' @import vegan
-#' @import ggplot2
 #' @import gridExtra
 #' @import plotrix
 #' @import netbenchmark
-#' @import igraph
+#' @importFrom igraph graph.data.frame
+#' @importFrom PANR assoScore
+#' @import plotly
+#' @import arules
+#' @import arulesViz
 #'
 #'@title{Mapping query transcriptomic profile against the reference repository}
 #'@description{We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) to detect similarities among these profiles (s).}
 #'@author{Isar Nassiri, Matthew McCall}
-#'@param input: A character, name of a drug or small compound molecule (e.g. "BRD-K37798499").
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'Mapping("BRD-K37798499") 
+#'input="BRD-K37798499"
+#'Mapping() 
 #'}
 #'@export
 
 Mapping <- NULL
-Mapping <- function(input) 
+Mapping <- function() 
 {
 
   #Load data
@@ -103,17 +100,18 @@ Mapping <- function(input)
 #'@title{Cell morphology enrichment analysis}
 #'@description{We use a stepwise variable selection approach, including combination of least absolute shrinkage and selection operator (LASSO) with cross-validation to tune parameter for cell morphology enrichment analysis. We consider all transcriptomic profiles in the reference repository as inputs of LASSO to select a subset of landmark genes (v) that best describe an indicated profile of cell morphology feature. }
 #'@author{Isar Nassiri, Matthew McCall}
-#'@param number_of_features: An integer, number of cell morphological phynetoypes (features).
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'Mapping("BRD-K37798499")
-#'Cell_Morphology_Enrichment_Analysis(20) 
+#'input="BRD-K37798499"
+#'number_of_features = 20
+#'Mapping()
+#'Cell_Morphology_Enrichment_Analysis() 
 #'}
 #'@export
 
 Cell_Morphology_Enrichment_Analysis <- NULL
-Cell_Morphology_Enrichment_Analysis <- function(number_of_features)
+Cell_Morphology_Enrichment_Analysis <- function()
 {
     
   Destiny_Folder <- system.file(package = "CMEA")
@@ -125,8 +123,6 @@ Cell_Morphology_Enrichment_Analysis <- function(number_of_features)
   CMP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
   MCR <- list();
-  dim(CMP_subset)
-  dim(TP_subset)
  
   for(i in 1:number_of_features)
   {
@@ -135,11 +131,9 @@ Cell_Morphology_Enrichment_Analysis <- function(number_of_features)
     
     x <- data.matrix(TP_subset)                #predictors
     y <- as.numeric(unlist(x_new2))            #response
-    dim(x)
-    length(y)
     
     set.seed(1)
-    fit.lasso = glmnet(x,y, standardize=T)  
+    fit.lasso = glmnet(x,y, standardize=TRUE)  
     cv.lasso=cv.glmnet(x,y)
     lam.best <- cv.lasso$lambda.min
     
@@ -191,7 +185,7 @@ Cell_Morphology_Enrichment_Analysis <- function(number_of_features)
   
   for(i in 1:length(MCR))
   {
-    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=T), stringsAsFactors=FALSE)
+    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE)
     df2 <- rep(names(MCR[i]), dim(df)[2])
     df3 <-  rbind(df,df2)
     df4 <-  cbind(df3,df4)
@@ -201,8 +195,7 @@ Cell_Morphology_Enrichment_Analysis <- function(number_of_features)
   
   df4 <- t(df4)
   colnames(df4) <- c("name","feature")
-  df4 <- (df4[-dim(df4)[1],])
-  
+  df4 <- (df4[-dim(df4)[1],])  
  
   Destiny_Folder <- system.file(package = "CMEA")
   Destiny_Folder = paste(Destiny_Folder, "/Temp_file.txt", sep = "")  
@@ -218,7 +211,7 @@ Cell_Morphology_Enrichment_Analysis <- function(number_of_features)
   Names <- as.character(agregatation$feature)
   
   setDT(agregatation)[, id := .GRP, by = name]    
-  agregatation <- agregatation[order(agregatation$id, decreasing=F),]  
+  agregatation <- agregatation[order(agregatation$id, decreasing=FALSE),]  
   agregatation$id <- sprintf("Cluster_%d", agregatation$id)  
   agregatation <- as.data.frame(agregatation)
   length(agregatation$feature)
@@ -234,22 +227,20 @@ Cell_Morphology_Enrichment_Analysis <- function(number_of_features)
   system.file(package="CMEA")
      
  }
- 
+  
 #'@export
 #'@title{Ranking of cell morphological phenotypes based on the Strength Centrality Score (SCS).}
 #'@description{We consider the connectivity and centrality of cell morphological features in Cosine similarity network of image-based cell morphological profile to rank them based on the Strength Centrality Score (SCS).}
 #'@author{Isar Nassiri, Matthew McCall}
-#'@param TOP: An integer, number of cell morphological features in ranked list.
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'Mapping("BRD-K37798499")
-#'Cell_Morphology_Enrichment_Analysis(20) 
-#'Ranking_Cell_Morphological_features(20) 
+#'TOP=20
+#'Ranking_Cell_Morphological_features() 
 #'}
 #'@export
 
-Ranking_Cell_Morphological_features <- function(TOP)
+Ranking_Cell_Morphological_features <- function()
 {
   Destiny_Folder <- system.file(package = "CMEA")
   Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
@@ -267,7 +258,7 @@ Ranking_Cell_Morphological_features <- function(TOP)
   Names <- as.character(agregatation$feature)
   
   setDT(agregatation)[, id := .GRP, by = name]    
-  agregatation <- agregatation[order(agregatation$id, decreasing=F),]   #sort based on the indices
+  agregatation <- agregatation[order(agregatation$id, decreasing=FALSE),]   #sort based on the indices
   agregatation$id <- sprintf("Cluster_%d", agregatation$id) 			#add term of cluster at the beginning of each index
   agregatation <- as.data.frame(agregatation)
   length(agregatation$feature)
@@ -282,7 +273,7 @@ Ranking_Cell_Morphological_features <- function(TOP)
   as_strength <- as_strength[ , c(3,5)]
   agregatation <- merge(agregatation, as_strength, by = "feature")
 
-  Long <- as_strength[order(as_strength[, 2], decreasing=T)[1:TOP],]
+  Long <- as_strength[order(as_strength[, 2], decreasing=TRUE)[1:TOP],]
   Long$type <- rep(1, dim(Long)[1])
    
   Long$feature <- factor(Long$feature, levels = Long$feature[order(Long$Strength_centrality)]) #I order y axis based on the x axis
@@ -294,199 +285,21 @@ Ranking_Cell_Morphological_features <- function(TOP)
   system.file(package="CMEA")
   
  }
-  
-#'@export
-#'@title{Gene regulatory network of cell morphological phenotypes}
-#'@description{We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes. .}
-#'@author{Isar Nassiri, Matthew McCall}
-#'@param number_of_features: An integer, number of cell morphological phenotype; support: An integer, is the proportion of cell morphological features which are associated with an indicated gene set; confidence: An integer, the threshold of confidence.
-#'@examples{
-#'data(Transcriptomic_Profile)
-#'data(Cell_Morphology_Profile)
-#'Mapping("BRD-K37798499")
-#'GRN(10, 0.2, 0.9) 
-#'}
-#'@export
-
-GRN <- function(number_of_features, support, confidence)  
-{
-  
-  Destiny_Folder <- system.file(package = "CMEA")
-  Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
-  TP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
-  
-  Destiny_Folder <- system.file(package = "CMEA")
-  Destiny_Folder = paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
-  CMP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
-  
-  MCR <- list();
-  
-  for(i in 1:number_of_features)
-  {
-    x_new2 <- as.data.frame(CMP_subset[,i])
-    colnames(x_new2) <- colnames(CMP_subset)[i]
-    
-    x <- data.matrix(TP_subset)                #predictors
-    y <- as.numeric(unlist(x_new2))            #response
-    dim(x)
-    length(y)
-    
-    set.seed(1)
-    fit.lasso = glmnet(x,y, standardize=T)  
-    cv.lasso=cv.glmnet(x,y)
-    lam.best <- cv.lasso$lambda.min
-    
-    #-- extract significant coefficients -- 
-    Lasso_coefficient <- coef(fit.lasso, s=cv.lasso$lambda.min)
-    Lasso_coefficient <- as.matrix(Lasso_coefficient)
-    
-    inds <- which(Lasso_coefficient[,1]!=0)
-    variables<-row.names(Lasso_coefficient)[inds]
-    variables<-variables[!(variables %in% '(Intercept)')];
-    
-    length(which(0 != Lasso_coefficient[,1]))
-    results <- as.data.frame(Lasso_coefficient[which(0 != Lasso_coefficient[,1]),1])
-    colnames(results) <- "coef"
-    results <- as.data.frame(results[-1,,FALSE])   
-    dim(results)
-    selected_genes <- rownames(results)
-    
-    ste_name <- data.frame();
-    
-    LL <- NULL
-    LL <- (length(selected_genes))
-    
-    if(0<length(selected_genes))
-    {
-      selected_GO <- selected_genes
-      
-      for(j2 in 1:LL)
-      {
-        ste_name[j2,1] <- selected_GO[j2]
-      }
-      
-      if(!is.null(ste_name$V1))
-      {
-        MCR[[i]] <- ste_name[complete.cases(ste_name),1]
-        names(MCR)[i] <- colnames(x_new2)
-      } else {
-        MCR[[i]] <- "NULL"
-        names(MCR)[i] <- colnames(x_new2)
-      }
-    }
-  }
-  
-  null_cms <- which(sapply(MCR, is.null))
-  if(0<length(null_cms)){ MCR <- MCR[-c(null_cms)] }
-  #--
-  
-  trans1 <- as(MCR, "transactions")
-  rules0 = apriori(trans1, parameter=list(support=support, confidence=confidence))
-  
-  Destiny_Folder <- system.file(package = "CMEA")
-  setwd(Destiny_Folder)
-  write(rules0, file = "Temp_file2.txt", quote=FALSE, col.names = F, row.names = F)
-  
-  Destiny_Folder <- system.file(package = "CMEA")
-  Destiny_Folder = paste(Destiny_Folder, "/Temp_file2.txt", sep = "")
-  data <-read.table(Destiny_Folder)
-  
-  rules <- list()
-  
-  for(i in 1:dim(data)[1])
-  {
-    v1 <- strsplit(as.character(data[i,1]), ",")
-    v1 <- gsub( "\\{|\\}" , "" , v1[[1]] )  #\\{  or \\}
-    
-    rules[[i]] <- v1
-    
-    v1 <- strsplit(as.character(data[i,3]), ",")
-    v1 <- gsub( "\\{|\\}" , "" , v1[[1]] )  #\\{  or \\}
-    
-    names(rules)[i] <- v1
-  }
-  
-  rules_df <- data.frame(c("gene1","gene2"))
-  
-  for(i in 1:length(rules))
-  {
-    df <- data.frame(matrix(unlist(rules[[i]]), nrow=1, byrow=T), stringsAsFactors=FALSE)
-    df2 <- rep(names(rules[i]), dim(df)[2])
-    df3 <-  rbind(df,df2)
-    rules_df <-  cbind(df3,rules_df)
-  }
-  
-  rules_df <- t(rules_df)
-  dim(rules_df)
-  rules_df <- rules_df[-dim(rules_df)[1],]
-  length(unique(c(rules_df[,1],rules_df[,2])))
-  
-  subrules2 <- head(sort(rules0, by="lift"), 200)
-  plot(subrules2, method="grouped", shading="confidence")
-
-  clr <- clr.wrap(TP_subset)
-  
-  graph <- graph.adjacency(clr)
-  edgelist <- get.edgelist(graph)
-  edgelist2 <- paste(edgelist[,1], edgelist[,2], sep = "~")
-  length(edgelist2)
- 
-  ru <- paste(rules_df[,1], rules_df[,2], sep = "~")
-  length(ru)
-  
-  length((which(edgelist2 %in% ru)))
-  selected_edges <- edgelist2[which(edgelist2 %in% ru)]
-  length(selected_edges)
-  
-  graph_e <- data.frame()
-  
-  for (i in 1:length(selected_edges))
-  {
-    e_ <- unlist(strsplit(selected_edges[i], "~"))
-    graph_e[i,1] <- e_[1]
-    graph_e[i,2] <- e_[2]
-  }
-  
-  matrix_of_interactions <- as.matrix(graph_e)
-  colnames(matrix_of_interactions) <- c("geneSymbol", "geneSymbol2")
-  matrix_of_interactions <- matrix_of_interactions[!duplicated(matrix_of_interactions),]
-  dim(matrix_of_interactions)
-  length(unique(c(graph_e[,1],graph_e[,2])))
-  
-  Destiny_Folder <- system.file(package = "CMEA")
-  Destiny_Folder = paste(Destiny_Folder, "/Topology_of_integrated_network.txt", sep = "")
-  
-  write.table(
-    matrix_of_interactions, Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
-  )
-  
-  Destiny_Folder <- system.file(package = "CMEA")
-  Destiny_Folder = paste(Destiny_Folder, "/All_genes_in_GRN.txt", sep = "")
-  
-  write.table(
-    unique(c(graph_e[,1],graph_e[,2])), Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
-  )
-  
-  print("You can find the results at: ")
-  system.file(package="CMEA")
-  
- }
  
 #'@export
 #'@title{Cross-tabulation of landmark genes, and single-cell morphological features}
 #'@description{We present the results of cell morphology enrichment analysis as cross-tabulation of landmark genes, and single-cell morphological features including the direction of effects (up or down regulation).}
 #'@author{Isar Nassiri, Matthew McCall}
-#'@param input: An integer, numeber of top cell morphological phenotypes in the ranked list, input: A character, name of a drug or small molecule.
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'Mapping("BRD-K37798499")
-#'Cell_Morphology_Enrichment_Analysis(20) 
-#'crosstabulation(10, "BRD-K37798499") 
+#'TOP=10
+#'input="BRD-K37798499"
+#'crosstabulation() 
 #'}
 #'@export 
  
-crosstabulation <- function(TOP, input)
+crosstabulation <- function()
 {
   
   Destiny_Folder <- system.file(package = "CMEA")
@@ -505,7 +318,7 @@ crosstabulation <- function(TOP, input)
   Names <- as.character(agregatation$feature)
   
   setDT(agregatation)[, id := .GRP, by = name]   						#Package 'data.table' - CRAN, it indexes the gene sets (add new column of indices)
-  agregatation <- agregatation[order(agregatation$id, decreasing=F),]   #Sort based on the indices
+  agregatation <- agregatation[order(agregatation$id, decreasing=FALSE),]   #Sort based on the indices
   agregatation$id <- sprintf("Cluster_%d", agregatation$id)             #Add term of cluster at the beginning of each index
   agregatation <- as.data.frame(agregatation)
   length(agregatation$feature)
@@ -520,7 +333,7 @@ crosstabulation <- function(TOP, input)
   as_strength <- as_strength[ , c(3,5)]
   agregatation <- merge(agregatation, as_strength, by = "feature")
   
-  Long <- as_strength[order(as_strength[, 2], decreasing=T)[1:TOP],]
+  Long <- as_strength[order(as_strength[, 2], decreasing=TRUE)[1:TOP],]
   Long$type <- rep(1, dim(Long)[1])
   
   #-- visulization of crosstab table ---
@@ -583,16 +396,18 @@ crosstabulation <- function(TOP, input)
 
  }
  
-#'@export
+#' @export
 #'@title{Modeling of cell morphological features based on the transcriptomic profile.}
 #'@description{We leverage the significant cross correlation between the cell morphological feature and related transcriptomic profiles to predict previously unrecognized cell morphological states for transcriptomic of experimental perturbation of interest.
 #'You should use the whole of transcriptomic and cell morphological profiles as input of this function to get real results.}
 #'@author{Isar Nassiri, Matthew McCall}
-#'@param An integer: Number_features, number of cell morphological phenotype; Number_profiles: An integer, number of profiles (test sets).
 #'@export 
- 
-Modeling_morphological_features <- function(Number_features, Number_profiles)
+
+Modeling_morphological_features <- function()
 {
+    #Number_features=?  [Number of cell morphological phenotype]; 
+	#Number_profiles=?  [An integer, number of profiles (test sets)];
+	
 	#Load data
 	data(Transcriptomic_Profile)
 	data(Cell_Morphology_Profile)
@@ -600,7 +415,7 @@ Modeling_morphological_features <- function(Number_features, Number_profiles)
 	L1000_TP_profiles <- Transcriptomic_Profile
 	L1000_MP_profiles <- Cell_Morphology_Profile
 
-	rand <- sample(1:dim(L1000_MP_profiles)[2], Number_features, replace = F)
+	rand <- sample(1:dim(L1000_MP_profiles)[2], Number_features, replace = FALSE)
 
 	a1 <- data.frame()
 
@@ -664,7 +479,7 @@ Modeling_morphological_features <- function(Number_features, Number_profiles)
 		  x = TP_subset0[-i,]
 		  y = CMP_subset0[-i,rand[j]]
 		  
-		  lasso.2 <- glmnet(x, y, standardize=T)
+		  lasso.2 <- glmnet(x, y, standardize=TRUE)
 		  
 		  #-- extract significant coefficients -- 
 		  train=sample(seq(dim(x)[1]),(dim(x)[1]/2),replace=FALSE)
