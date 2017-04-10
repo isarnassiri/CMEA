@@ -396,18 +396,23 @@ crosstabulation <- function()
 
  }
  
-#' @export
+#'@export
 #'@title{Modeling of cell morphological features based on the transcriptomic profile.}
 #'@description{We leverage the significant cross correlation between the cell morphological feature and related transcriptomic profiles to predict previously unrecognized cell morphological states for transcriptomic of experimental perturbation of interest.
 #'You should use the whole of transcriptomic and cell morphological profiles as input of this function to get real results.}
 #'@author{Isar Nassiri, Matthew McCall}
+#'@examples{
+#'data(Transcriptomic_Profile)
+#'data(Cell_Morphology_Profile)
+#'Number_features=5  #Number of cell morphological phenotype
+#'Number_profiles=5  #An integer, number of profiles (test sets)
+#'Modeling_morphological_features() 
+#'}
 #'@export 
 
 Modeling_morphological_features <- function()
 {
-    #Number_features=?  [Number of cell morphological phenotype]; 
-	#Number_profiles=?  [An integer, number of profiles (test sets)];
-	
+
 	#Load data
 	data(Transcriptomic_Profile)
 	data(Cell_Morphology_Profile)
