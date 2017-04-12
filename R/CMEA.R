@@ -508,21 +508,18 @@ Modeling_morphological_features <- function()
 		  
 		  if(1<dim(results)[1])
 		  {			
-			pred <- predict(lasso.2, newx=TP_subset0, s=lam.best)
-			
-			i1 <- which(rownames(pred) %in% rownames(L1000_TP_profiles)[i0])
-			
-			pred1[y0,1] <- as.numeric(pred[i1, ])
+			pred <- predict(lasso.2, newx=TP_subset0[i,,drop = FALSE], s=lam.best)
+
+			pred1[y0,1] <- as.numeric(pred)
 			pred1[y0,2] <- CMP_subset0[i, rand[j]]
 			pred1[y0,3] <- colnames(CMP_subset0)[rand[j]]
 			pred1[y0,4] <- rownames(TP_subset0)[i]
-			pred1[y0,5] <- L1000_MP_profiles[i0, rand[j]]
 			y0 = y0 + 1
 		  }
 		}
 	  
 	  dim(pred1)
-	  colnames(pred1) <- c("Prediction", "Experiment", "CM", "Drug", "raw_data")
+	  colnames(pred1) <- c("Prediction", "Experiment", "CM", "Drug")
 	  pred1 <- pred1[!is.na(pred1$Prediction),]
 	  
 	  a1 <- rbind(a1, pred1)
