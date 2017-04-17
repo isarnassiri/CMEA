@@ -10,6 +10,15 @@ Modeling_morphological_features()
 {We leverage the significant cross correlation between the cell morphological feature and related transcriptomic profiles to predict previously unrecognized cell morphological states for transcriptomic of experimental perturbation of interest.
 You should use the whole of transcriptomic and cell morphological profiles as input of this function to get real results.}
 }
+\examples{
+{
+data(Transcriptomic_Profile)
+data(Cell_Morphology_Profile)
+Number_features=5  #Number of cell morphological phenotype
+Number_profiles=5  #An integer, number of profiles (test sets)
+Modeling_morphological_features() 
+}
+}
 \author{
 {Isar Nassiri, Matthew McCall}
 }
