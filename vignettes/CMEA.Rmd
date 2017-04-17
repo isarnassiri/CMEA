@@ -64,19 +64,7 @@ We use the least absolute shrinkage and selection operator (LASSO) to fit a regr
    Modeling_morphological_features(10,20)   
    #10 is the number of features and 20 is number of randomly selected drugs from reference backend repository
    
-## 7. Association rule mining of transcriptomic and cell morphological profiles
-
-We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes. For inference of gene regulatory network of cell morphological phenotypes, first, we use the arules R package to mine association rules between genes based on the cell morphological gene sets. Next, we apply Context Likelihood (CLR) network inference algorithm to identify the interactions between genes based on the transcriptomic profiles.  
-   
-   Example of application: 
-    
-   install("Cellmorphenricha")
-   library(Cellmorphenricha)  
-   Mapping("BRD-K37798499")   
-   GRN(10, 0.2, 0.9) 
-   #10 is the number of features, 0.2 and 0.9 are support and confidence parameters, respectively.
-
-## 8. We demonstrate the application of CMEA package by using the transcriptomic and single cell morphological profiles of human bone osteosarcoma cells (U-2 OS cells) in response to the 9515 drugs or small molecule compounds from the library of network-based cellular signatures (LINCS) database (http://lincscloud.org).  
+## 7. We demonstrate the application of CMEA package by using the transcriptomic and single cell morphological profiles of human bone osteosarcoma cells (U-2 OS cells) in response to the 9515 drugs or small molecule compounds from the library of network-based cellular signatures (LINCS) database (http://lincscloud.org).  
 
 	Example of application:
 	#Load the transcriptomic profile in workspace
