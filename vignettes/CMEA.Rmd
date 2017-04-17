@@ -64,7 +64,9 @@ We use the least absolute shrinkage and selection operator (LASSO) to fit a regr
    Modeling_morphological_features(10,20)   
    #10 is the number of features and 20 is number of randomly selected drugs from reference backend repository
    
-## 7. We demonstrate the application of CMEA package by using the transcriptomic and single cell morphological profiles of human bone osteosarcoma cells (U-2 OS cells) in response to the 9515 drugs or small molecule compounds from the library of network-based cellular signatures (LINCS) database (http://lincscloud.org).  
+## 7. Input data
+
+	We demonstrate the application of CMEA package by using the transcriptomic and single cell morphological profiles of human bone osteosarcoma cells (U-2 OS cells) in response to the 9515 drugs or small molecule compounds from the library of network-based cellular signatures (LINCS) database (http://lincscloud.org).  
 
 	Example of application:
 	#Load the transcriptomic profile in workspace
@@ -73,5 +75,5 @@ We use the least absolute shrinkage and selection operator (LASSO) to fit a regr
 	data(Cell_Morphology_Profile_Complete)
 	Mapping("BRD-K37798499")
 	
-## 9. Reference
+## 8. Reference
 Wawer, M.J., Jaramillo, D.E., Dancik, V., Fass, D.M., Haggarty, S.J., Shamji, A.F., Wagner, B.K., Schreiber, S.L. and Clemons, P.A. (2014) Automated Structure-Activity Relationship Mining: Connecting Chemical Structure to Biological Profiles. Journal of Biomolecular Screening, 19, 738-748.   
