@@ -11,8 +11,6 @@
 #' @importFrom igraph graph.data.frame
 #' @importFrom PANR assoScore
 #' @import plotly
-#' @import arules
-#' @import arulesViz
 #'
 #'@title{Mapping query transcriptomic profile against the reference repository}
 #'@description{We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) to detect similarities among these profiles (s).}
@@ -410,179 +408,168 @@ crosstabulation <- function()
 #'}
 #'@export 
 
+Modeling_morphological_features <- NULL
 Modeling_morphological_features <- function()
 {
+#Load data
+data(Transcriptomic_Profile)
+data(Cell_Morphology_Profile)
 
-	#Load data
-	data(Transcriptomic_Profile)
-	data(Cell_Morphology_Profile)
+L1000_TP_profiles <- Transcriptomic_Profile
+L1000_MP_profiles <- Cell_Morphology_Profile
 
-	L1000_TP_profiles <- Transcriptomic_Profile
-	L1000_MP_profiles <- Cell_Morphology_Profile
+Number_profiles = 5
+Number_features = 5
+rand <- sample(1:dim(L1000_MP_profiles)[2], Number_features, replace = FALSE)
 
-	rand <- sample(1:dim(L1000_MP_profiles)[2], Number_features, replace = FALSE)
+a1 <- data.frame()
 
-	a1 <- data.frame()
-
-	for(i0 in 1:Number_profiles)
-	{
-	  x_new <- as.data.frame(L1000_TP_profiles[i0,])
-	  colnames(x_new) <- rownames(L1000_TP_profiles)[i0]
-	  
-	  query_binary <- ifelse(x_new > 0, 1, 0)
-	  repositoyr_binary <- ifelse(L1000_TP_profiles > 0, 1, 0)
-	  
-	  performance <- data.frame()
-	  TP = TN = FP = FN = 0
-	  
-	  for(j in 1:dim(repositoyr_binary)[1])
-	  {
-		for(i in 1:dim(repositoyr_binary)[2])
-		{
-		  a = query_binary[i]   
-		  b = repositoyr_binary[j,i] 
-		  
-		  if(a+b == 2) { TP <- TP + 1 }
-		  if(a+b == 0) { TN <- TN + 1 }
-		  if(a == 0 && b == 1) { FP <- FP + 1 }
-		  if(a == 1 && b == 0) { FN <- FN + 1 }
-		}
-		performance[j,1] <- TP
-		performance[j,2] <- TN
-		performance[j,3] <- FP
-		performance[j,4] <- FN
-		performance[j,5] <- ((TP*TN)-(FP*FN)) / sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN))
-		TP = TN = FP = FN = 0
-	  }
-	  
-	  colnames(performance) <- c("TP", "TN", "FP", "FN","MCC")
-	  rownames(performance) <- rownames(repositoyr_binary)
-	  
-	  selected_drugs <- which(performance[,5] > 0.1)
-	  length(selected_drugs)
-	  
-	  CMP_subset <- L1000_MP_profiles[selected_drugs,] 
-	  TP_subset <- L1000_TP_profiles[selected_drugs,]
-	  
-	  CMP_subsetn <- data.Normalization(CMP_subset,type="n4");
-	  TP_subsetn <- data.Normalization(TP_subset,type="n4");
-	  CMP_subset0 <- data.matrix(CMP_subsetn)
-	  TP_subset0 <- data.matrix(TP_subsetn)
-
-	  dim(CMP_subset0)
-	  dim(TP_subset0)
-	  
-	  pred1 <- data.frame()
-	  
-	  y <- 1
-	  
-	  for(j in 1:10)
-	  {
-	  
-		  i <- which(rownames(TP_subset0) %in% rownames(L1000_TP_profiles)[i0])
-		  
-		  x = TP_subset0[-i,]
-		  y = CMP_subset0[-i,rand[j]]
-		  
-		  lasso.2 <- glmnet(x, y, standardize=TRUE)
-		  
-		  #-- extract significant coefficients -- 
-		  train=sample(seq(dim(x)[1]),(dim(x)[1]/2),replace=FALSE)
-		  lasso.tr=glmnet(x[train,],y[train])
-		  pred=predict(lasso.tr,x[-train,])
-		  rmse= sqrt(apply((y[-train]-pred)^2,2,mean))
-		  #plot(log(lasso.tr$lambda),rmse,type="b",xlab="Log(lambda)")
-		  lam.best=lasso.tr$lambda[order(rmse)[1]]
-		  lam.best
-		  
-		  Lasso_coefficient <- coef(lasso.2, s=lam.best)
-		  inds<-which(Lasso_coefficient!=0)
-		  variables<-row.names(Lasso_coefficient)[inds]
-		  variables<-variables[!(variables %in% '(Intercept)')];
-		  
-		  length(which(0 != Lasso_coefficient[,1]))
-		  results <- as.data.frame(Lasso_coefficient[which(0 != Lasso_coefficient[,1]),1])
-		  colnames(results) <- "coef"
-		  results <- as.data.frame(results[-1,,FALSE])  # FALSE is about inactivation of drop paremters
-		  dim(results)[1]
-		  
-		  if(1<dim(results)[1])
-		  {			
-			pred <- predict(lasso.2, newx=TP_subset0[i,,drop = FALSE], s=lam.best)
-
-			pred1[y0,1] <- as.numeric(pred)
-			pred1[y0,2] <- CMP_subset0[i, rand[j]]
-			pred1[y0,3] <- colnames(CMP_subset0)[rand[j]]
-			pred1[y0,4] <- rownames(TP_subset0)[i]
-			y0 = y0 + 1
-		  }
-		}
-	  
-	  dim(pred1)
-	  colnames(pred1) <- c("Prediction", "Experiment", "CM", "Drug")
-	  pred1 <- pred1[!is.na(pred1$Prediction),]
-	  
-	  a1 <- rbind(a1, pred1)
-	}
-
-	name <- unique(a1$CM)
-
-	a2 <- data.frame()
-
-	par(mfrow=c(2,5))
-
-	for(i in 1:length(name))
-	{
-	  Experiment = a1$Experiment[which(a1$CM %in% name[i])]
-	  Prediction = a1$Prediction[which(a1$CM %in% name[i])]
-	  # plot(Experiment,  Prediction, title(name[i]))
-	  
-	  print(cor(a1$Experiment[which(a1$CM %in% name[i] )], 
-				a1$Prediction[which(a1$CM %in% name[i] )]))
-	  a2[i,1] <- name[i]
-	  
-	  a2[i,2] <- (cor(a1$Experiment[which(a1$CM %in% name[i])], 
-					  a1$Prediction[which(a1$CM %in% name[i])]))^2
-	  #-- plot --
-	  op <- par(cex.main = 1.5, mar = c(5, 6, 4, 5) + 0.1, mgp = c(3.5, 1, 0), cex.lab = 1.5, 
-				font.lab = 2, cex.axis = 1.3, bty = "n", las = 1)
-	  plot(Experiment, Prediction, col = "black", pch = 21, bg = "grey", cex = 2,
-		   xlim = c(0,1), ylim = c(.0,1), ylab = "", xlab = "", axes = FALSE)
-	  title(main=name[i], cex.main=1.1)
-	  axis(1)
-	  axis(2) 
-	  par(las = 0)
-	  mtext("Experiment", side = 1, line = 2.5, cex = 1)
-	  mtext("Prediction", side = 2, line = 3.7, cex = 1)
-	  text(0.9, .65, paste("r^2 =", round(a2[i,2],2)), cex = 1.5)
-	  
-	}
-
-	colnames(a2) <- c("Cell morphology", "Exp. and Pred. Correlations (R^2)")
-	qplot(1:10, 1:10, geom = "blank") + theme_bw() + theme(line = element_blank(), text = element_blank()) +
-    annotation_custom(grob = tableGrob(a2))
-
-	name_file = paste("plot", i, ".png", sep = "")
-	Destiny_Folder <- system.file(package = "CMEA")
-	setwd(Destiny_Folder)
-	ggsave(filename=name_file)
-
-	# -- Save data --
-	  Destiny_Folder <- system.file(package = "CMEA")
-	  Destiny_Folder = paste(Destiny_Folder, "/Modeling_correlation.txt", sep = "")
-	  
-	  write.table(
-		a2, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
-	  )
-
-	  Destiny_Folder <- system.file(package = "CMEA")
-	  Destiny_Folder = paste(Destiny_Folder, "/Modeling_details.txt", sep = "")
-	  
-	  write.table(
-		a1, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
-	  )
-
-	print("You can find the results at: ")
-    system.file(package="CMEA")
+for(i0 in 1:Number_profiles)
+{
+  x_new <- as.data.frame(L1000_TP_profiles[i0,])
+  colnames(x_new) <- rownames(L1000_TP_profiles)[i0]
   
+  query_binary <- ifelse(x_new > 0, 1, 0)
+  repositoyr_binary <- ifelse(L1000_TP_profiles > 0, 1, 0)
+  
+  performance <- data.frame()
+  TP = TN = FP = FN = 0
+  
+  for(j in 1:dim(repositoyr_binary)[1])
+  {
+    for(i in 1:dim(repositoyr_binary)[2])
+    {
+      a = query_binary[i]   
+      b = repositoyr_binary[j,i] 
+      
+      if(a+b == 2) { TP <- TP + 1 }
+      if(a+b == 0) { TN <- TN + 1 }
+      if(a == 0 && b == 1) { FP <- FP + 1 }
+      if(a == 1 && b == 0) { FN <- FN + 1 }
+    }
+    performance[j,1] <- TP
+    performance[j,2] <- TN
+    performance[j,3] <- FP
+    performance[j,4] <- FN
+    performance[j,5] <- ((TP*TN)-(FP*FN)) / sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN))
+    TP = TN = FP = FN = 0
+  }
+  
+  colnames(performance) <- c("TP", "TN", "FP", "FN","MCC")
+  rownames(performance) <- rownames(repositoyr_binary)
+  
+  selected_drugs <- which(performance[,5] > 0.1)
+  length(selected_drugs)
+  
+  CMP_subset <- L1000_MP_profiles[selected_drugs,] 
+  TP_subset <- L1000_TP_profiles[selected_drugs,]
+  
+  CMP_subsetn <- data.Normalization(CMP_subset,type="n4");
+  TP_subsetn <- data.Normalization(TP_subset,type="n4");
+  CMP_subset0 <- data.matrix(CMP_subsetn)
+  TP_subset0 <- data.matrix(TP_subsetn)
+  
+  dim(CMP_subset0)
+  dim(TP_subset0)
+  
+  pred1 <- data.frame()
+  
+  y0 <- 1
+  
+  for(j in 1:Number_features)
+  {
+    
+    i <- which(rownames(TP_subset0) %in% rownames(L1000_TP_profiles)[i0])
+    
+    x = TP_subset0[-i,]
+    y = CMP_subset0[-i,rand[j]]
+    
+    lasso.2 <- glmnet(x, y, standardize=TRUE)
+    
+    #-- extract significant coefficients -- 
+    train=sample(seq(dim(x)[1]),(dim(x)[1]/2),replace=FALSE)
+    lasso.tr=glmnet(x[train,],y[train])
+    pred=predict(lasso.tr,x[-train,])
+    rmse= sqrt(apply((y[-train]-pred)^2,2,mean))
+    #plot(log(lasso.tr$lambda),rmse,type="b",xlab="Log(lambda)")
+    lam.best=lasso.tr$lambda[order(rmse)[1]]
+    lam.best
+    
+    Lasso_coefficient <- coef(lasso.2, s=lam.best)
+    inds<-which(Lasso_coefficient[,1]!=0)
+    variables<-row.names(Lasso_coefficient)[inds]
+    variables<-variables[!(variables %in% '(Intercept)')];
+    
+    length(which(0 != Lasso_coefficient[,1]))
+    results <- as.data.frame(Lasso_coefficient[which(0 != Lasso_coefficient[,1]),1])
+    colnames(results) <- "coef"
+    results <- as.data.frame(results[-1,,FALSE])  # FALSE is about inactivation of drop paremters
+    dim(results)[1]
+    
+    if(1<dim(results)[1])
+    {			
+      pred <- predict(lasso.2, newx=TP_subset0[i,,drop = FALSE], s=lam.best)
+      
+      pred1[y0,1] <- as.numeric(pred)
+      pred1[y0,2] <- CMP_subset0[i, rand[j]]
+      pred1[y0,3] <- colnames(CMP_subset0)[rand[j]]
+      y0 = y0 + 1
+    }
+  }
+  
+  if(0<dim(pred1)[1])
+  {
+    colnames(pred1) <- c("Prediction", "Experiment", "CM")
+    pred1 <- pred1[!is.na(pred1$Prediction),]
+    a1 <- rbind(a1, pred1)
+  }
+  
+}
+
+name <- unique(a1$CM)
+
+a2 <- data.frame()
+
+par(mfrow=c(2,5))
+
+for(i in 1:length(name))
+{
+  Experiment = a1$Experiment[which(a1$CM %in% name[i])]
+  Prediction = a1$Prediction[which(a1$CM %in% name[i])]
+  # plot(Experiment,  Prediction, title(name[i]))
+  
+  a2[i,1] <- name[i]
+  
+  a2[i,2] <- (cor(a1$Experiment[which(a1$CM %in% name[i])], 
+                  a1$Prediction[which(a1$CM %in% name[i])]))^2
+  
+}
+
+colnames(a2) <- c("Cell morphology", "Exp. and Pred. Correlations (R^2)")
+qplot(1:10, 1:10, geom = "blank") + theme_bw() + theme(line = element_blank(), text = element_blank()) +
+  annotation_custom(grob = tableGrob(a2))
+
+name_file = paste("plot", i, ".png", sep = "")
+Destiny_Folder <- system.file(package = "CMEA")
+setwd(Destiny_Folder)
+ggsave(filename=name_file)
+
+# -- Save data --
+Destiny_Folder <- system.file(package = "CMEA")
+Destiny_Folder = paste(Destiny_Folder, "/Modeling_correlation.txt", sep = "")
+
+write.table(
+  a2, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
+)
+
+Destiny_Folder <- system.file(package = "CMEA")
+Destiny_Folder = paste(Destiny_Folder, "/Modeling_details.txt", sep = "")
+
+write.table(
+  a1, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
+)
+
+print("You can find the results at: ")
+system.file(package="CMEA") 
+
  }
