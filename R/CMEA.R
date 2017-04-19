@@ -1,16 +1,15 @@
 #' @export
 #' @import clusterSim
 #' @import netbenchmark
+#' @import ggplot2
+#' @import gridExtra
 #' @import qgraph
 #' @import data.table
 #' @import glmnet
 #' @import vegan
-#' @import gridExtra
-#' @import plotrix
 #' @import netbenchmark
 #' @importFrom igraph graph.data.frame
 #' @importFrom PANR assoScore
-#' @import plotly
 #'
 #'@title{Mapping query transcriptomic profile against the reference repository}
 #'@description{We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) to detect similarities among these profiles (s).}
@@ -545,31 +544,31 @@ for(i in 1:length(name))
   
 }
 
-colnames(a2) <- c("Cell morphology", "Exp. and Pred. Correlations (R^2)")
-qplot(1:10, 1:10, geom = "blank") + theme_bw() + theme(line = element_blank(), text = element_blank()) +
-  annotation_custom(grob = tableGrob(a2))
+	colnames(a2) <- c("Cell morphology", "Exp. and Pred. Correlations (R^2)")
+	qplot(1:10, 1:10, geom = "blank") + theme_bw() + theme(line = element_blank(), text = element_blank()) +
+	  annotation_custom(grob = tableGrob(a2))
 
-name_file = paste("plot", i, ".png", sep = "")
-Destiny_Folder <- system.file(package = "CMEA")
-setwd(Destiny_Folder)
-ggsave(filename=name_file)
+	name_file = paste("plot", i, ".png", sep = "")
+	Destiny_Folder <- system.file(package = "CMEA")
+	setwd(Destiny_Folder)
+	ggsave(filename=name_file)
 
-# -- Save data --
-Destiny_Folder <- system.file(package = "CMEA")
-Destiny_Folder = paste(Destiny_Folder, "/Modeling_correlation.txt", sep = "")
+	# -- Save data --
+	Destiny_Folder <- system.file(package = "CMEA")
+	Destiny_Folder = paste(Destiny_Folder, "/Modeling_correlation.txt", sep = "")
 
-write.table(
-  a2, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
-)
+	write.table(
+	  a2, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
+	)
 
-Destiny_Folder <- system.file(package = "CMEA")
-Destiny_Folder = paste(Destiny_Folder, "/Modeling_details.txt", sep = "")
+	Destiny_Folder <- system.file(package = "CMEA")
+	Destiny_Folder = paste(Destiny_Folder, "/Modeling_details.txt", sep = "")
 
-write.table(
-  a1, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
-)
+	write.table(
+	  a1, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
+	)
 
-print("You can find the results at: ")
-system.file(package="CMEA") 
+	print("You can find the results at: ")
+	system.file(package="CMEA") 
 
  }
