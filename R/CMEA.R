@@ -1,4 +1,5 @@
 #' @export
+#' @import rgl
 #' @importFrom clusterSim data.Normalization
 #' @import netbenchmark
 #' @import gridExtra
@@ -492,7 +493,6 @@ for(i0 in 1:Number_profiles)
     lasso.tr=glmnet(x[train,],y[train])
     pred=predict(lasso.tr,x[-train,])
     rmse= sqrt(apply((y[-train]-pred)^2,2,mean))
-    #plot(log(lasso.tr$lambda),rmse,type="b",xlab="Log(lambda)")
     lam.best=lasso.tr$lambda[order(rmse)[1]]
     lam.best
     
@@ -537,7 +537,6 @@ for(i in 1:length(name))
 {
   Experiment = a1$Experiment[which(a1$CM %in% name[i])]
   Prediction = a1$Prediction[which(a1$CM %in% name[i])]
-  # plot(Experiment,  Prediction, title(name[i]))
   
   a2[i,1] <- name[i]
   
