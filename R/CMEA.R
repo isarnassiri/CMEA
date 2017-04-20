@@ -1,7 +1,6 @@
 #' @export
 #' @importFrom clusterSim data.Normalization
 #' @import netbenchmark
-#' @importFrom ggplot2 ggplot
 #' @import gridExtra
 #' @importFrom data.table setDT
 #' @import glmnet
@@ -274,9 +273,16 @@ Ranking_Cell_Morphological_features <- function()
    
   Long$feature <- factor(Long$feature, levels = Long$feature[order(Long$Strength_centrality)]) #I order y axis based on the x axis
   Long <- Long[!is.na(Long$feature),]
-  g <- ggplot(Long, aes(x = Strength_centrality, y = feature, group = type))
-  g +  xlab("") + ylab("") + geom_point() +  geom_path() + labs(list(title = "Top enriched cell morphological phenotypes", x = "Single-cell morphological phenotype score (Strength)", y = "Single-cell morphological phenotype")) + theme_grey(base_size = 10)
+  #g <- ggplot(Long, aes(x = Strength_centrality, y = feature, group = type))
+  #g + xlab("") + ylab("") + geom_point() +  geom_path() + labs(list(title = "Top enriched cell morphological phenotypes", x = "Single-cell morphological phenotype score (Strength)", y = "Single-cell morphological phenotype")) + theme_grey(base_size = 10)
  
+  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder = paste(Destiny_Folder, "/Ranking_Cell_Morphological_features.txt", sep = "")
+  
+  write.table(
+    Long, Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
+  )
+  
   print("You can find the results at: ")
   system.file(package="CMEA")
   
@@ -357,11 +363,11 @@ crosstabulation <- function()
   
   df5$weight <- weights
     
-  ggplot(df5, aes(x = Gene_name, y = Cell_morphological_phenotype, fill = weight)) +
-    geom_raster() +
-    theme_bw() +
-    theme(axis.text.x = element_text(angle = 270, hjust = 0),
-          axis.text=element_text(size=8), axis.title=element_text(size=14, face="bold"))
+  #ggplot(df5, aes(x = Gene_name, y = Cell_morphological_phenotype, fill = weight)) +
+  #  geom_raster() +
+  #  theme_bw() +
+  #  theme(axis.text.x = element_text(angle = 270, hjust = 0),
+  #        axis.text=element_text(size=8), axis.title=element_text(size=14, face="bold"))
   
   df6 <-data.frame()
   
