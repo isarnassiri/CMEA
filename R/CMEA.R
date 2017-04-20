@@ -1,13 +1,12 @@
 #' @export
-#' @import clusterSim
+#' @importFrom clusterSim data.Normalization
 #' @import netbenchmark
-#' @import ggplot2
+#' @importFrom ggplot2 ggplot
 #' @import gridExtra
-#' @import qgraph
-#' @import data.table
+#' @importFrom data.table setDT
 #' @import glmnet
 #' @import vegan
-#' @import netbenchmark
+#' @importFrom qgraph centralityTable
 #' @importFrom igraph graph.data.frame
 #' @importFrom PANR assoScore
 #'
@@ -467,10 +466,7 @@ for(i0 in 1:Number_profiles)
   TP_subsetn <- data.Normalization(TP_subset,type="n4");
   CMP_subset0 <- data.matrix(CMP_subsetn)
   TP_subset0 <- data.matrix(TP_subsetn)
-  
-  dim(CMP_subset0)
-  dim(TP_subset0)
-  
+
   pred1 <- data.frame()
   
   y0 <- 1
@@ -545,13 +541,6 @@ for(i in 1:length(name))
 }
 
 	colnames(a2) <- c("Cell morphology", "Exp. and Pred. Correlations (R^2)")
-	qplot(1:10, 1:10, geom = "blank") + theme_bw() + theme(line = element_blank(), text = element_blank()) +
-	  annotation_custom(grob = tableGrob(a2))
-
-	name_file = paste("plot", i, ".png", sep = "")
-	Destiny_Folder <- system.file(package = "CMEA")
-	setwd(Destiny_Folder)
-	ggsave(filename=name_file)
 
 	# -- Save data --
 	Destiny_Folder <- system.file(package = "CMEA")
