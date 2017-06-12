@@ -97,7 +97,7 @@ You can find the results at your current directory.
 
 ## 7. Input data
 
-We demonstrate the application of CMEA package by using the transcriptomic and single cell morphological profiles of human bone osteosarcoma cells (U-2 OS cells) in response to the 9515 drugs or small molecule compounds. The complete data set in format of RDA is available at (https://bitbucket.org/isarnassiri/CMEADATA).
+We demonstrate the application of CMEA package by using the transcriptomic and single cell morphological profiles of human bone osteosarcoma cells (U-2 OS cells) in response to the 9515 drugs or small molecule compounds. The complete data set in format of RDA is available at (https://bitbucket.org/isarnassiri/cmeadata).
 
 ## References:
 1. Lamb, J., Crawford, E.D., Peck, D., Modell, J.W., Blat, I.C., Wrobel, M.J., Lerner, J., Brunet, J.P., Subramanian, A., Ross, K.N. et al. (2006) The connectivity map: Using gene-expression signatures to connect small molecules, genes, and disease. Science, 313, 1929-1935.
