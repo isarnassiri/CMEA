@@ -10,19 +10,22 @@
 #' @importFrom igraph graph.data.frame
 #' @importFrom PANR assoScore
 #'
+#'@name{Mapping}
+#'@alias{Mapping} 
+#'@alias{input} 
 #'@title{Mapping query transcriptomic profile against the reference repository}
 #'@description{We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) to detect similarities among these profiles (s).}
 #'@author{Isar Nassiri, Matthew McCall}
+#'@param input A number
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'input="BRD-K37798499"
-#'Mapping() 
+#'Mapping("BRD-K37798499") 
 #'}
 #'@export
 
 Mapping <- NULL
-Mapping <- function() 
+Mapping <- function(input) 
 {
 
   #Load data
@@ -37,6 +40,9 @@ Mapping <- function()
   x_new <- as.data.frame(L1000_TP_profiles[i0,])
   colnames(x_new) <- rownames(L1000_TP_profiles)[i0]
   dim(x_new)
+  
+  L1000_MP_profiles <- L1000_MP_profiles[-which(rownames(L1000_MP_profiles) %in% input),]
+  L1000_TP_profiles <- L1000_TP_profiles[-which(rownames(L1000_TP_profiles) %in% input),]
   
   query_binary <- ifelse(x_new > 0, 1, 0)
   repositoyr_binary <- ifelse(L1000_TP_profiles > 0, 1, 0)
@@ -73,48 +79,50 @@ Mapping <- function()
   CMP_subset <- L1000_MP_profiles[selected_drugs,]
   TP_subset <- L1000_TP_profiles[selected_drugs,]
 
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
   
   write.table(
     CMP_subset, Destiny_Folder, sep = "\t", row.names = TRUE, quote = FALSE
   )
   
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
   
   write.table(
     TP_subset, Destiny_Folder, sep = "\t", row.names = TRUE, quote = FALSE
   )
   
-  print("You can find the results at: ")
-  system.file(package="CMEA")
+  print("You can find the results at your current directory: ")
+  getwd()
    
 }
 
 #'@export
+#'@name{CellMorphologyEnrichmentAnalysis}
+#'@alias{CellMorphologyEnrichmentAnalysis} 
+#'@alias{number_of_features}
 #'@title{Cell morphology enrichment analysis}
 #'@description{We use a stepwise variable selection approach, including combination of least absolute shrinkage and selection operator (LASSO) with cross-validation to tune parameter for cell morphology enrichment analysis. We consider all transcriptomic profiles in the reference repository as inputs of LASSO to select a subset of landmark genes (v) that best describe an indicated profile of cell morphology feature. }
 #'@author{Isar Nassiri, Matthew McCall}
+#'@param number_of_features A Number
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'input="BRD-K37798499"
-#'number_of_features = 20
-#'Mapping()
-#'Cell_Morphology_Enrichment_Analysis() 
+#'Mapping("BRD-K37798499")
+#'CellMorphologyEnrichmentAnalysis(20) 
 #'}
 #'@export
 
-Cell_Morphology_Enrichment_Analysis <- NULL
-Cell_Morphology_Enrichment_Analysis <- function()
+CellMorphologyEnrichmentAnalysis <- NULL
+CellMorphologyEnrichmentAnalysis <- function(number_of_features)
 {
     
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
   TP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
   CMP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
@@ -193,13 +201,13 @@ Cell_Morphology_Enrichment_Analysis <- function()
   colnames(df4) <- c("name","feature")
   df4 <- (df4[-dim(df4)[1],])  
  
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/Temp_file.txt", sep = "")  
   write.table(
     df4, Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
   )
 
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/Temp_file.txt", sep = "")
   datCM2 <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
@@ -212,41 +220,46 @@ Cell_Morphology_Enrichment_Analysis <- function()
   agregatation <- as.data.frame(agregatation)
   length(agregatation$feature)
   
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/Cell_Morphology_Enrichment_Analysis_Results.txt", sep = "")
   
   write.table(
     agregatation, Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
   )
   
-  print("You can find the results at: ")
-  system.file(package="CMEA")
+  print("You can find the results at your current directory: ")
+  getwd()
      
  }
-  
-#'@export
+
+#'@export 
+#'@name{RankCellMorphologicalFeatures}
+#'@alias{RankCellMorphologicalFeatures}
+#'@alias{TOP}
 #'@title{Ranking of cell morphological phenotypes based on the Strength Centrality Score (SCS).}
 #'@description{We consider the connectivity and centrality of cell morphological features in Cosine similarity network of image-based cell morphological profile to rank them based on the Strength Centrality Score (SCS).}
 #'@author{Isar Nassiri, Matthew McCall}
+#'@param TOP A Number
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'TOP=20
-#'Ranking_Cell_Morphological_features() 
+#'Mapping("BRD-K37798499")
+#'CellMorphologyEnrichmentAnalysis(20) 
+#'RankCellMorphologicalFeatures(20) 
 #'}
 #'@export
 
-Ranking_Cell_Morphological_features <- function()
+RankCellMorphologicalFeatures <- function(TOP)
 {
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
   TP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
   CMP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/Temp_file.txt", sep = "")
   datCM2 <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
@@ -277,43 +290,49 @@ Ranking_Cell_Morphological_features <- function()
   g <- ggplot(Long, aes(x = Strength_centrality, y = feature, group = type))
   g + xlab("") + ylab("") + geom_point() +  geom_path() + labs(list(title = "Top enriched cell morphological phenotypes", x = "Single-cell morphological phenotype score (Strength)", y = "Single-cell morphological phenotype")) + theme_grey(base_size = 10)
  
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/Ranking_Cell_Morphological_features.txt", sep = "")
   
   write.table(
     Long, Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
   )
   
-  print("You can find the results at: ")
-  system.file(package="CMEA")
+  print("You can find the results at your current directory: ")
+  getwd()
   
  }
- 
-#'@export
+   
+#'@export   
+#'@name{crossTabulation}
+#'@alias{crossTabulation}
+#'@alias{TOP}
+#'@alias{input}
 #'@title{Cross-tabulation of landmark genes, and single-cell morphological features}
 #'@description{We present the results of cell morphology enrichment analysis as cross-tabulation of landmark genes, and single-cell morphological features including the direction of effects (up or down regulation).}
 #'@author{Isar Nassiri, Matthew McCall}
+#'@param TOP A Number
+#'@param input A Name
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'TOP=10
-#'input="BRD-K37798499"
-#'crosstabulation() 
+#'Mapping("BRD-K37798499")
+#'CellMorphologyEnrichmentAnalysis(20) 
+#'crossTabulation(10, "BRD-K37798499") 
 #'}
 #'@export 
  
-crosstabulation <- function()
+crossTabulation <- function(TOP, input)
 {
   
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
   TP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
   CMP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/Temp_file.txt", sep = "")
   datCM2 <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
@@ -387,182 +406,250 @@ crosstabulation <- function()
   
   MA_f <- MA[1:length(unique(df6[,1])),-(1:length(unique(df6[,1])))]  
 
-  Destiny_Folder <- system.file(package = "CMEA")
+  Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/Crosstab_table.txt", sep = "")
   
   write.table(
     MA_f, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
   )
   
-  print("You can find the results at: ")
-  system.file(package="CMEA")
+  print("You can find the results at your current directory: ")
+  getwd()
 
  }
- 
-#'@export
-#'@title{Modeling of cell morphological features based on the transcriptomic profile.}
-#'@description{We leverage the significant cross correlation between the cell morphological feature and related transcriptomic profiles to predict previously unrecognized cell morphological states for transcriptomic of experimental perturbation of interest.
-#'You should use the whole of transcriptomic and cell morphological profiles as input of this function to get real results.}
+
+#'@export 
+#'@name{GRN}
+#'@alias{GRN}
+#'@alias{number_of_features}
+#'@alias{support}
+#'@alias{confidence}
+#'@title{Gene regulatory network of cell morphological phenotypes}
+#'@description{We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes. .}
 #'@author{Isar Nassiri, Matthew McCall}
+#'@param number_of_features A Number
+#'@param support A Number
+#'@param confidence A Number
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'Number_features=5  #Number of cell morphological phenotype
-#'Number_profiles=5  #An integer, number of profiles (test sets)
-#'Modeling_morphological_features() 
+#'Mapping("BRD-K37798499")
+#'GRN(10, 0.1, 0.6) 
 #'}
-#'@export 
+#'@export
 
-Modeling_morphological_features <- NULL
-Modeling_morphological_features <- function()
+GRN <- function(number_of_features, support, confidence)  
 {
-#Load data
-data(Transcriptomic_Profile)
-data(Cell_Morphology_Profile)
-
-L1000_TP_profiles <- Transcriptomic_Profile
-L1000_MP_profiles <- Cell_Morphology_Profile
-
-Number_profiles = 5
-Number_features = 5
-rand <- sample(1:dim(L1000_MP_profiles)[2], Number_features, replace = FALSE)
-
-a1 <- data.frame()
-
-for(i0 in 1:Number_profiles)
-{
-  x_new <- as.data.frame(L1000_TP_profiles[i0,])
-  colnames(x_new) <- rownames(L1000_TP_profiles)[i0]
   
-  query_binary <- ifelse(x_new > 0, 1, 0)
-  repositoyr_binary <- ifelse(L1000_TP_profiles > 0, 1, 0)
+  Destiny_Folder <- getwd()
+  Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
+  TP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
-  performance <- data.frame()
-  TP = TN = FP = FN = 0
+  Destiny_Folder <- getwd()
+  Destiny_Folder = paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
+  CMP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
-  for(j in 1:dim(repositoyr_binary)[1])
+  MCR <- list();
+ 
+  for(i in 1:number_of_features)
   {
-    for(i in 1:dim(repositoyr_binary)[2])
-    {
-      a = query_binary[i]   
-      b = repositoyr_binary[j,i] 
-      
-      if(a+b == 2) { TP <- TP + 1 }
-      if(a+b == 0) { TN <- TN + 1 }
-      if(a == 0 && b == 1) { FP <- FP + 1 }
-      if(a == 1 && b == 0) { FN <- FN + 1 }
-    }
-    performance[j,1] <- TP
-    performance[j,2] <- TN
-    performance[j,3] <- FP
-    performance[j,4] <- FN
-    performance[j,5] <- ((TP*TN)-(FP*FN)) / sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN))
-    TP = TN = FP = FN = 0
-  }
-  
-  colnames(performance) <- c("TP", "TN", "FP", "FN","MCC")
-  rownames(performance) <- rownames(repositoyr_binary)
-  
-  selected_drugs <- which(performance[,5] > 0.1)
-  length(selected_drugs)
-  
-  CMP_subset <- L1000_MP_profiles[selected_drugs,] 
-  TP_subset <- L1000_TP_profiles[selected_drugs,]
-  
-  CMP_subsetn <- data.Normalization(CMP_subset,type="n4");
-  TP_subsetn <- data.Normalization(TP_subset,type="n4");
-  CMP_subset0 <- data.matrix(CMP_subsetn)
-  TP_subset0 <- data.matrix(TP_subsetn)
-
-  pred1 <- data.frame()
-  
-  y0 <- 1
-  
-  for(j in 1:Number_features)
-  {
+    x_new2 <- as.data.frame(CMP_subset[,i])
+    colnames(x_new2) <- colnames(CMP_subset)[i]
     
-    i <- which(rownames(TP_subset0) %in% rownames(L1000_TP_profiles)[i0])
+    x <- data.matrix(TP_subset)                #predictors
+    y <- as.numeric(unlist(x_new2))            #response
     
-    x = TP_subset0[-i,]
-    y = CMP_subset0[-i,rand[j]]
-    
-    lasso.2 <- glmnet(x, y, standardize=TRUE)
+    set.seed(1)
+    fit.lasso = glmnet(x,y, standardize=TRUE)  
+    cv.lasso=cv.glmnet(x,y)
+    lam.best <- cv.lasso$lambda.min
     
     #-- extract significant coefficients -- 
-    train=sample(seq(dim(x)[1]),(dim(x)[1]/2),replace=FALSE)
-    lasso.tr=glmnet(x[train,],y[train])
-    pred=predict(lasso.tr,x[-train,])
-    rmse= sqrt(apply((y[-train]-pred)^2,2,mean))
-    lam.best=lasso.tr$lambda[order(rmse)[1]]
-    lam.best
+    Lasso_coefficient <- coef(fit.lasso, s=cv.lasso$lambda.min)
+    Lasso_coefficient <- as.matrix(Lasso_coefficient)
     
-    Lasso_coefficient <- coef(lasso.2, s=lam.best)
-    inds<-which(Lasso_coefficient[,1]!=0)
+    inds <- which(Lasso_coefficient[,1]!=0)
     variables<-row.names(Lasso_coefficient)[inds]
     variables<-variables[!(variables %in% '(Intercept)')];
     
     length(which(0 != Lasso_coefficient[,1]))
     results <- as.data.frame(Lasso_coefficient[which(0 != Lasso_coefficient[,1]),1])
     colnames(results) <- "coef"
-    results <- as.data.frame(results[-1,,FALSE])  # FALSE is about inactivation of drop paremters
-    dim(results)[1]
+    results <- as.data.frame(results[-1,,FALSE])   
+    dim(results)
+    selected_genes <- rownames(results)
     
-    if(1<dim(results)[1])
-    {			
-      pred <- predict(lasso.2, newx=TP_subset0[i,,drop = FALSE], s=lam.best)
+    ste_name <- data.frame();
+    
+    LL <- NULL
+    LL <- (length(selected_genes))
+    
+    if(0<length(selected_genes))
+    {
+      selected_GO <- selected_genes
       
-      pred1[y0,1] <- as.numeric(pred)
-      pred1[y0,2] <- CMP_subset0[i, rand[j]]
-      pred1[y0,3] <- colnames(CMP_subset0)[rand[j]]
-      y0 = y0 + 1
+      for(j2 in 1:LL)
+      {
+        ste_name[j2,1] <- selected_GO[j2]
+      }
+      
+      if(!is.null(ste_name$V1))
+      {
+        MCR[[i]] <- ste_name[complete.cases(ste_name),1]
+        names(MCR)[i] <- colnames(x_new2)
+      } else {
+        MCR[[i]] <- "NULL"
+        names(MCR)[i] <- colnames(x_new2)
+      }
     }
   }
+    
+  #-- Remove cm terms without any associated gene set
+  null_cms <- which(sapply(MCR, is.null))
+  if(0<length(null_cms)){ MCR <- MCR[-c(null_cms)] }
+  #--
   
-  if(0<dim(pred1)[1])
+  df4 <- data.frame(c("gene","pathway"))
+  
+  for(i in 1:length(MCR))
   {
-    colnames(pred1) <- c("Prediction", "Experiment", "CM")
-    pred1 <- pred1[!is.na(pred1$Prediction),]
-    a1 <- rbind(a1, pred1)
+    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=T), stringsAsFactors=FALSE)
+    df2 <- rep(names(MCR[i]), dim(df)[2])
+    df3 <-  rbind(df,df2)
+    df4 <-  cbind(df3,df4)
   }
   
-}
-
-name <- unique(a1$CM)
-
-a2 <- data.frame()
-
-par(mfrow=c(2,5))
-
-for(i in 1:length(name))
-{
-  Experiment = a1$Experiment[which(a1$CM %in% name[i])]
-  Prediction = a1$Prediction[which(a1$CM %in% name[i])]
+  length(names(MCR))
   
-  a2[i,1] <- name[i]
+  df4 <- t(df4)
+  colnames(df4) <- c("name","feature")
+  df4 <- (df4[-dim(df4)[1],])
+     
+  #-- Association analysis
   
-  a2[i,2] <- (cor(a1$Experiment[which(a1$CM %in% name[i])], 
-                  a1$Prediction[which(a1$CM %in% name[i])]))^2
+  all_genes_in_MCR <- as.data.frame(unique(df4[,1]))
+  colnames(all_genes_in_MCR) <- "gene_name"
+  dim(all_genes_in_MCR)
   
-}
+  #-- Support(X)
+  
+  in_gene_set <- 0 
+  
+  for(j in 1:length(all_genes_in_MCR$gene_name))
+  {
+    
+    for(i in 1:length(MCR))
+    {
+      df <- as.character(as.data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=T), stringsAsFactors=FALSE))
+      class(df)
+      if(0<length(intersect(as.character(all_genes_in_MCR$gene_name[j]), df))) { in_gene_set <- in_gene_set + 1  }
+    }
+    
+    all_genes_in_MCR[j,2] <- in_gene_set/length(MCR)
+    in_gene_set <- 0 
+  }
 
-	colnames(a2) <- c("Cell morphology", "Exp. and Pred. Correlations (R^2)")
+  all_genes_in_MCR_t <- all_genes_in_MCR[which(all_genes_in_MCR$V2 > support),]
+  dim(all_genes_in_MCR_t)
+  
+  #-- Combination of genes --
+  
+  combination_all_genes_in_MCR <- expand.grid(all_genes_in_MCR_t$gene_name, all_genes_in_MCR_t$gene_name)
+  class(combination_all_genes_in_MCR)
+  colnames(combination_all_genes_in_MCR) <- c("gene1","gene2")
 
-	# -- Save data --
-	Destiny_Folder <- system.file(package = "CMEA")
-	Destiny_Folder = paste(Destiny_Folder, "/Modeling_correlation.txt", sep = "")
+  #-- Remove self-loops --
+  
+  o <- 1
+  
+  selfloop <- data.frame()
+  
+  for(j in 1:dim(combination_all_genes_in_MCR)[1])
+  {
+    if(0 < length(which(as.character(combination_all_genes_in_MCR$gene1[j]) %in% as.character(combination_all_genes_in_MCR$gene2[j])))) 
+      { selfloop[o,1] <- j; o = o + 1 }
+  }
+  
+  combination_all_genes_in_MCR <- combination_all_genes_in_MCR[-as.numeric(selfloop$V1),]
+  dim(combination_all_genes_in_MCR)
+  
+  #--- Support(X,Y) + confidence ---
+  
+  in_gene_set <- 0 
+  
+  for(j in 1:dim(combination_all_genes_in_MCR)[1])
+  {
+    
+    for(i in 1:length(MCR))
+    {
+      df <- as.character(as.data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=T), stringsAsFactors=FALSE))
+       
+      if(2 == length(intersect(c(as.character(combination_all_genes_in_MCR$gene1[j]), as.character(combination_all_genes_in_MCR$gene2[j])),df)))
+        { in_gene_set <- in_gene_set + 1  }
+    }
+    
+    combination_all_genes_in_MCR[j,3] <- in_gene_set/length(MCR)
+    
+    combination_all_genes_in_MCR[j,4] <-
+    (in_gene_set/length(MCR))/all_genes_in_MCR_t[which(all_genes_in_MCR_t$gene_name %in% as.character(combination_all_genes_in_MCR$gene1[j])),2]
+    
+    in_gene_set <- 0 
+  }
+  
+  colnames(combination_all_genes_in_MCR) <- c("gene1","gene2","supp(XvY)","Confidence")
+  
+  combination_all_genes_in_MCR_sig <- combination_all_genes_in_MCR[combination_all_genes_in_MCR$Confidence > confidence,]
+  edgelist2 <- paste(combination_all_genes_in_MCR_sig[,1], combination_all_genes_in_MCR_sig[,2], sep = "~")
+  length(edgelist2)
+  
+  # correlation network:
+  clr <- clr.wrap(TP_subset)
 
-	write.table(
-	  a2, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
-	)
+  graph <- graph.adjacency(clr)
+  edgelist <- get.edgelist(graph)
+  edgelist1 <- paste(edgelist[,1], edgelist[,2], sep = "~")
+  length(edgelist1)
+  
+  #-- comparison of rules and correlation
 
-	Destiny_Folder <- system.file(package = "CMEA")
-	Destiny_Folder = paste(Destiny_Folder, "/Modeling_details.txt", sep = "")
+  selected_edges <- edgelist1[which(edgelist1 %in% edgelist2)]
+  length(selected_edges)
 
-	write.table(
-	  a1, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
-	)
-
-	print("You can find the results at: ")
-	system.file(package="CMEA") 
-
+  #Visulization of graph
+  graph_e <- data.frame()
+  
+  for (i in 1:length(selected_edges))
+  {
+    e_ <- unlist(strsplit(selected_edges[i], "~"))
+    graph_e[i,1] <- e_[1]
+    graph_e[i,2] <- e_[2]
+  }
+  
+  matrix_of_interactions <- as.matrix(graph_e)
+  colnames(matrix_of_interactions) <- c("geneSymbol", "geneSymbol2")
+  matrix_of_interactions <- matrix_of_interactions[!duplicated(matrix_of_interactions),]
+  dim(matrix_of_interactions)
+  length(unique(c(graph_e[,1],graph_e[,2])))
+  
+  # -- Save data --
+  
+  Destiny_Folder <- getwd()
+  Destiny_Folder = paste(Destiny_Folder, "/Topology_of_integrated_network.txt", sep = "")
+  
+  write.table(
+    matrix_of_interactions, Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
+  )
+  
+  Destiny_Folder <- getwd()
+  Destiny_Folder = paste(Destiny_Folder, "/All_genes_in_GRN.txt", sep = "")
+  
+  write.table(
+    unique(c(graph_e[,1],graph_e[,2])), Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
+  )
+  
+  print("You can find the results at your current directory: ")
+  getwd()
+  
  }
+ 	 
+	 
