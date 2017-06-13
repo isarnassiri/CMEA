@@ -5,12 +5,10 @@
 \alias{RankCellMorphologicalFeatures}
 \title{{Ranking of cell morphological phenotypes based on the Strength Centrality Score (SCS).}}
 \usage{
-RankCellMorphologicalFeatures(TOP, number_of_features, input)
+RankCellMorphologicalFeatures(TOP, input)
 }
 \arguments{
 \item{TOP}{A Number}
-
-\item{number_of_features}{A Number}
 
 \item{input}{A character}
 }
@@ -21,7 +19,7 @@ RankCellMorphologicalFeatures(TOP, number_of_features, input)
 {
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
-RankCellMorphologicalFeatures(20, 20, "BRD-K37798499") 
+RankCellMorphologicalFeatures(20, "BRD-K37798499") 
 }
 }
 \author{

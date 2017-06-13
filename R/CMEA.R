@@ -17,6 +17,9 @@
 #'@description{We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) to detect similarities among these profiles (s).}
 #'@author{Isar Nassiri, Matthew McCall}
 #'@param input A character
+#'@arguments {
+#'@item{A character}{name of a drug or small compound molecule (e.g. "BRD-K37798499")}(input) 
+#'}
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
@@ -108,6 +111,10 @@ Mapping <- function(input)
 #'@author{Isar Nassiri, Matthew McCall}
 #'@param number_of_features A Number
 #'@param input A character
+#'@arguments {
+#'@item{A Number}{Number of first top cell morphological features}(number_of_features) 
+#'@item{A character}{name of a drug or small compound molecule (e.g. "BRD-K37798499")}(input) 
+#'}
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
@@ -242,18 +249,21 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features, input)
 #'@description{We consider the connectivity and centrality of cell morphological features in Cosine similarity network of image-based cell morphological profile to rank them based on the Strength Centrality Score (SCS).}
 #'@author{Isar Nassiri, Matthew McCall}
 #'@param TOP A Number
-#'@param number_of_features A Number
 #'@param input A character
+#'@arguments {
+#'@item{A Number}{Number of first top cell morphological features}(TOP) 
+#'@item{A character}{name of a drug or small compound molecule (e.g. "BRD-K37798499")}(input) 
+#'}
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'RankCellMorphologicalFeatures(20, 20, "BRD-K37798499") 
+#'RankCellMorphologicalFeatures(20, "BRD-K37798499") 
 #'}
 #'@export
 
-RankCellMorphologicalFeatures <- function(TOP, number_of_features, input)
+RankCellMorphologicalFeatures <- function(TOP, input)
 {
-  CellMorphologyEnrichmentAnalysis(number_of_features, input) 
+  CellMorphologyEnrichmentAnalysis(TOP, input) 
 
   Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
@@ -315,22 +325,21 @@ RankCellMorphologicalFeatures <- function(TOP, number_of_features, input)
 #'@description{We present the results of cell morphology enrichment analysis as cross-tabulation of landmark genes, and single-cell morphological features including the direction of effects (up or down regulation).}
 #'@author{Isar Nassiri, Matthew McCall}
 #'@param TOP A Number
-#'@param number_of_features A Number
 #'@param input A character
+#'@arguments {
+#'@item{A Number}{Number of first top cell morphological features}(TOP) 
+#'@item{A character}{name of a drug or small compound molecule (e.g. "BRD-K37798499")}(input) 
+#'}
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'crossTabulation(10, 20, "BRD-K37798499") 
+#'crossTabulation(20, "BRD-K37798499") 
 #'}
 #'@export 
  
-crossTabulation <- function(TOP, number_of_features, input)
+crossTabulation <- function(TOP, input)
 {
-  CellMorphologyEnrichmentAnalysis(number_of_features, input) 
-  
-  Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
-  TP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
+  CellMorphologyEnrichmentAnalysis(TOP, input) 
   
   Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
@@ -368,7 +377,7 @@ crossTabulation <- function(TOP, number_of_features, input)
   df5 <- as.data.frame(df5)
   length(unique(as.character(df5[,2])))
   
-  query <- TP_subset[which(rownames(TP_subset) %in% input),]
+  query <- Transcriptomic_Profile[which(rownames(Transcriptomic_Profile) %in% input),]
   
   for(i in 1:dim(df5)[1])
   {
@@ -435,6 +444,12 @@ crossTabulation <- function(TOP, number_of_features, input)
 #'@param support A Number
 #'@param confidence A Number
 #'@param input A character
+#'@arguments {
+#'@item{A Number}{Number of first top cell morphological features}(number_of_features) 
+#'@item{A character}{name of a drug or small compound molecule (e.g. "BRD-K37798499")}(input) 
+#'@item{A Number}{proportion of cell morphological features which are associated with an indicated gene set.}(support) 
+#'@item{A Number}{threshold of confidence.}(confidence) 
+#'}
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)

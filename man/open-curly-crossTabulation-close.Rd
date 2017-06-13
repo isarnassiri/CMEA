@@ -5,12 +5,10 @@
 \alias{crossTabulation}
 \title{{Cross-tabulation of landmark genes, and single-cell morphological features}}
 \usage{
-crossTabulation(TOP, number_of_features, input)
+crossTabulation(TOP, input)
 }
 \arguments{
 \item{TOP}{A Number}
-
-\item{number_of_features}{A Number}
 
 \item{input}{A character}
 }
@@ -21,7 +19,7 @@ crossTabulation(TOP, number_of_features, input)
 {
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
-crossTabulation(10, 20, "BRD-K37798499") 
+crossTabulation(20, "BRD-K37798499") 
 }
 }
 \author{
