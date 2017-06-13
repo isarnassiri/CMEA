@@ -76,7 +76,7 @@ We use the RankCellMorphologicalFeatures() function to consider the connectivity
 Example of application:
    
 ```{}
-RankCellMorphologicalFeatures(20, 20, "BRD-K37798499") 
+RankCellMorphologicalFeatures(20, 20, "BRD-K37798499") #10 is the number of first top cell morphological features, and "BRD-K37798499" is a query.
 ```
 You can find the results in your current directory.
 

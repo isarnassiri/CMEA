@@ -1,5 +1,5 @@
 #' @export
-#' @importFrom ggplot2 ggplot
+#' @import ggplot2
 #' @importFrom clusterSim data.Normalization
 #' @import netbenchmark
 #' @import gridExtra
@@ -51,14 +51,14 @@ Mapping <- function(input)
   repositoyr_binary <- ifelse(L1000_TP_profiles > 0, 1, 0)
   
   performance <- data.frame()
-  TP = TN = FP = FN = 0
+  TP <- TN <- FP <- FN <- 0
   
   for(j in 1:dim(repositoyr_binary)[1])
   {
     for(i in 1:dim(repositoyr_binary)[2])
     {
-      a = query_binary[i]  #my standard
-      b = repositoyr_binary[j,i] 
+      a <- query_binary[i]  #my standard
+      b <- repositoyr_binary[j,i] 
       
       if(a+b == 2) { TP <- TP + 1 }
       if(a+b == 0) { TN <- TN + 1 }
@@ -70,7 +70,7 @@ Mapping <- function(input)
     performance[j,3] <- FP
     performance[j,4] <- FN
     performance[j,5] <- ((TP*TN)-(FP*FN)) / sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN))
-    TP = TN = FP = FN = 0
+    TP <- TN <- FP <- FN <- 0
   }
   
   colnames(performance) <- c("TP", "TN", "FP", "FN","MCC")
@@ -83,14 +83,14 @@ Mapping <- function(input)
   TP_subset <- L1000_TP_profiles[selected_drugs,]
 
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
   
   write.table(
     CMP_subset, Destiny_Folder, sep = "\t", row.names = TRUE, quote = FALSE
   )
   
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/TP_subset.txt", sep = "")
   
   write.table(
     TP_subset, Destiny_Folder, sep = "\t", row.names = TRUE, quote = FALSE
@@ -128,11 +128,11 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features, input)
   Mapping(input)
 	
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/TP_subset.txt", sep = "")
   TP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
   CMP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
   MCR <- list();
@@ -146,8 +146,8 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features, input)
     y <- as.numeric(unlist(x_new2))            #response
     
     set.seed(1)
-    fit.lasso = glmnet(x,y, standardize=TRUE)  
-    cv.lasso=cv.glmnet(x,y)
+    fit.lasso <- glmnet(x,y, standardize=TRUE)  
+    cv.lasso<-cv.glmnet(x,y)
     lam.best <- cv.lasso$lambda.min
     
     #-- extract significant coefficients -- 
@@ -211,13 +211,13 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features, input)
   df4 <- (df4[-dim(df4)[1],])  
  
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/Temp_file.txt", sep = "")  
+  Destiny_Folder <- paste(Destiny_Folder, "/Temp_file.txt", sep = "")  
   write.table(
     df4, Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
   )
 
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/Temp_file.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/Temp_file.txt", sep = "")
   datCM2 <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
   agregatation <- as.data.frame(aggregate(name ~ feature, data = datCM2, toString))   
@@ -230,7 +230,7 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features, input)
   length(agregatation$feature)
   
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/Cell_Morphology_Enrichment_Analysis_Results.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/Cell_Morphology_Enrichment_Analysis_Results.txt", sep = "")
   
   write.table(
     agregatation, Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
@@ -266,15 +266,15 @@ RankCellMorphologicalFeatures <- function(TOP, input)
   CellMorphologyEnrichmentAnalysis(TOP, input) 
 
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/TP_subset.txt", sep = "")
   TP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
   CMP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/Temp_file.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/Temp_file.txt", sep = "")
   datCM2 <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
   agregatation <- as.data.frame(aggregate(name ~ feature, data = datCM2, toString))   
@@ -305,7 +305,7 @@ RankCellMorphologicalFeatures <- function(TOP, input)
   g + xlab("") + ylab("") + geom_point() +  geom_path() + labs(list(title = "Top enriched cell morphological phenotypes", x = "Single-cell morphological phenotype score (Strength)", y = "Single-cell morphological phenotype")) + theme_grey(base_size = 10)
  
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/Ranking_Cell_Morphological_features.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/Ranking_Cell_Morphological_features.txt", sep = "")
   
   write.table(
     Long, Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
@@ -342,11 +342,11 @@ crossTabulation <- function(TOP, input)
   CellMorphologyEnrichmentAnalysis(TOP, input) 
   
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
   CMP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/Temp_file.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/Temp_file.txt", sep = "")
   datCM2 <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
   agregatation <- as.data.frame(aggregate(name ~ feature, data = datCM2, toString))  #aggregation of genes to each CM term
@@ -420,7 +420,7 @@ crossTabulation <- function(TOP, input)
   MA_f <- MA[1:length(unique(df6[,1])),-(1:length(unique(df6[,1])))]  
 
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/Crosstab_table.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/Crosstab_table.txt", sep = "")
   
   write.table(
     MA_f, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
@@ -462,11 +462,11 @@ GRN <- function(number_of_features, support, confidence, input)
   Mapping(input) 
   
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/TP_subset.txt", sep = "")
   TP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/CMP_subset.txt", sep = "")
   CMP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
   
   MCR <- list();
@@ -480,8 +480,8 @@ GRN <- function(number_of_features, support, confidence, input)
     y <- as.numeric(unlist(x_new2))            #response
     
     set.seed(1)
-    fit.lasso = glmnet(x,y, standardize=TRUE)  
-    cv.lasso=cv.glmnet(x,y)
+    fit.lasso <- glmnet(x,y, standardize=TRUE)  
+    cv.lasso<-cv.glmnet(x,y)
     lam.best <- cv.lasso$lambda.min
     
     #-- extract significant coefficients -- 
@@ -654,14 +654,14 @@ GRN <- function(number_of_features, support, confidence, input)
   # -- Save data --
   
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/Topology_of_integrated_network.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/Topology_of_integrated_network.txt", sep = "")
   
   write.table(
     matrix_of_interactions, Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
   )
   
   Destiny_Folder <- getwd()
-  Destiny_Folder = paste(Destiny_Folder, "/All_genes_in_GRN.txt", sep = "")
+  Destiny_Folder <- paste(Destiny_Folder, "/All_genes_in_GRN.txt", sep = "")
   
   write.table(
     unique(c(graph_e[,1],graph_e[,2])), Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
