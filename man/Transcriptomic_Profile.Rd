@@ -10,8 +10,12 @@ Transcriptomic_Profile
 }
 \description{
 {
-The transcriptomic profiles of human bone osteosarcoma cells (U-2 OS cells) in response to the 9515 drugs or small molecule compounds from the library of network-based cellular signatures (LINCS) database (http://lincscloud.org).
-This sample data set is subset of original data including the profile of 9515 drugs or small molecule compounds.
+We demonstrate the application of the CMEA package by using the transcriptomic and single cell morphological profiles of human bone osteosarcoma cells (U-2 OS cells) in response to the 9515 drugs or small molecule compounds (1). The raw data include the transcripotimic profiles of 20340 drugs and small compound moleculess, and processed version of this data is available as supplementary of (2). The intersection of transcriptomic and single-cell morphological profiles includes 9515 drugs and small compound molecules, and use as a backend repository of CMEA package. The transcriptomic profile in backend repository is 9515*978 matric, including the fold change of the 978 landmark gene expression in response to the treatment of U-2 OS cells with 9515 drugs and small compound molecules.#'}
+}
+\references{
+{
+1. Wawer, M.J., Jaramillo, D.E., Dancik, V., Fass, D.M., Haggarty, S.J., Shamji, A.F., Wagner, B.K., Schreiber, S.L. and Clemons, P.A. (2014) Automated Structure-Activity Relationship Mining: Connecting Chemical Structure to Biological Profiles. Journal of Biomolecular Screening, 19,738-748.
+2. Wang, Z., Clark, N.R. and Ma'ayan, A. (2016) Drug-induced adverse events prediction with the LINCS L1000 data. Bioinformatics, 32, 2338-2345.
 }
 }
 \keyword{datasets}

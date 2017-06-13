@@ -8,7 +8,7 @@
 Mapping(input)
 }
 \arguments{
-\item{input}{A number}
+\item{input}{A character}
 }
 \description{
 {We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) to detect similarities among these profiles (s).}

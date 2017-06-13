@@ -16,7 +16,7 @@
 #'@title{Mapping query transcriptomic profile against the reference repository}
 #'@description{We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) to detect similarities among these profiles (s).}
 #'@author{Isar Nassiri, Matthew McCall}
-#'@param input A number
+#'@param input A character
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
@@ -93,7 +93,7 @@ Mapping <- function(input)
     TP_subset, Destiny_Folder, sep = "\t", row.names = TRUE, quote = FALSE
   )
   
-  print("You can find the results at your current directory: ")
+  print("You can find the results in your current directory: ")
   getwd()
    
 }
@@ -102,22 +102,24 @@ Mapping <- function(input)
 #'@name{CellMorphologyEnrichmentAnalysis}
 #'@alias{CellMorphologyEnrichmentAnalysis} 
 #'@alias{number_of_features}
+#'@alias{input} 
 #'@title{Cell morphology enrichment analysis}
 #'@description{We use a stepwise variable selection approach, including combination of least absolute shrinkage and selection operator (LASSO) with cross-validation to tune parameter for cell morphology enrichment analysis. We consider all transcriptomic profiles in the reference repository as inputs of LASSO to select a subset of landmark genes (v) that best describe an indicated profile of cell morphology feature. }
 #'@author{Isar Nassiri, Matthew McCall}
 #'@param number_of_features A Number
+#'@param input A character
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'Mapping("BRD-K37798499")
-#'CellMorphologyEnrichmentAnalysis(20) 
+#'CellMorphologyEnrichmentAnalysis(20, "BRD-K37798499") 
 #'}
 #'@export
 
 CellMorphologyEnrichmentAnalysis <- NULL
-CellMorphologyEnrichmentAnalysis <- function(number_of_features)
+CellMorphologyEnrichmentAnalysis <- function(number_of_features, input)
 {
-    
+  Mapping(input)
+	
   Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
   TP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
@@ -227,7 +229,7 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
     agregatation, Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
   )
   
-  print("You can find the results at your current directory: ")
+  print("You can find the results in your current directory: ")
   getwd()
      
  }
@@ -240,17 +242,19 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
 #'@description{We consider the connectivity and centrality of cell morphological features in Cosine similarity network of image-based cell morphological profile to rank them based on the Strength Centrality Score (SCS).}
 #'@author{Isar Nassiri, Matthew McCall}
 #'@param TOP A Number
+#'@param number_of_features A Number
+#'@param input A character
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'Mapping("BRD-K37798499")
-#'CellMorphologyEnrichmentAnalysis(20) 
-#'RankCellMorphologicalFeatures(20) 
+#'RankCellMorphologicalFeatures(20, 20, "BRD-K37798499") 
 #'}
 #'@export
 
-RankCellMorphologicalFeatures <- function(TOP)
+RankCellMorphologicalFeatures <- function(TOP, number_of_features, input)
 {
+  CellMorphologyEnrichmentAnalysis(number_of_features, input) 
+
   Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
   TP_subset <-read.table(Destiny_Folder, sep="\t", header = TRUE)
@@ -297,7 +301,7 @@ RankCellMorphologicalFeatures <- function(TOP)
     Long, Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
   )
   
-  print("You can find the results at your current directory: ")
+  print("You can find the results in your current directory: ")
   getwd()
   
  }
@@ -311,18 +315,18 @@ RankCellMorphologicalFeatures <- function(TOP)
 #'@description{We present the results of cell morphology enrichment analysis as cross-tabulation of landmark genes, and single-cell morphological features including the direction of effects (up or down regulation).}
 #'@author{Isar Nassiri, Matthew McCall}
 #'@param TOP A Number
-#'@param input A Name
+#'@param number_of_features A Number
+#'@param input A character
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'Mapping("BRD-K37798499")
-#'CellMorphologyEnrichmentAnalysis(20) 
-#'crossTabulation(10, "BRD-K37798499") 
+#'crossTabulation(10, 20, "BRD-K37798499") 
 #'}
 #'@export 
  
-crossTabulation <- function(TOP, input)
+crossTabulation <- function(TOP, number_of_features, input)
 {
+  CellMorphologyEnrichmentAnalysis(number_of_features, input) 
   
   Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
@@ -413,7 +417,7 @@ crossTabulation <- function(TOP, input)
     MA_f, Destiny_Folder, sep = "\t", row.names = TRUE, quote = TRUE
   )
   
-  print("You can find the results at your current directory: ")
+  print("You can find the results in your current directory: ")
   getwd()
 
  }
@@ -430,16 +434,17 @@ crossTabulation <- function(TOP, input)
 #'@param number_of_features A Number
 #'@param support A Number
 #'@param confidence A Number
+#'@param input A character
 #'@examples{
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
-#'Mapping("BRD-K37798499")
-#'GRN(10, 0.1, 0.6) 
+#'GRN(10, 0.1, 0.6, "BRD-K37798499") 
 #'}
 #'@export
 
-GRN <- function(number_of_features, support, confidence)  
+GRN <- function(number_of_features, support, confidence, input)  
 {
+  Mapping(input) 
   
   Destiny_Folder <- getwd()
   Destiny_Folder = paste(Destiny_Folder, "/TP_subset.txt", sep = "")
@@ -647,7 +652,7 @@ GRN <- function(number_of_features, support, confidence)
     unique(c(graph_e[,1],graph_e[,2])), Destiny_Folder, sep = "\t", row.names = FALSE, quote = FALSE
   )
   
-  print("You can find the results at your current directory: ")
+  print("You can find the results in your current directory: ")
   getwd()
   
  }
