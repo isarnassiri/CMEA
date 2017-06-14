@@ -448,7 +448,7 @@ crossTabulation <- function(TOP, input)
 #'@item{A Number}{Number of first top cell morphological features}(number_of_features) 
 #'@item{A character}{name of a drug or small compound molecule (e.g. "BRD-K37798499")}(input) 
 #'@item{A Number}{proportion of cell morphological features which are associated with an indicated gene set.}(support) 
-#'@item{A Number}{threshold of confidence.}(confidence) 
+#'@item{A Number}{is an indication of how often the rule has been found to be true.}(confidence) 
 #'}
 #'@examples{
 #'data(Transcriptomic_Profile)
