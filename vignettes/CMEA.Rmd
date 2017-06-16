@@ -50,10 +50,7 @@ We use the Mapping() function to map the query profile (Q) of fold change of gen
 
 Example of application: identification of similar drugs with the transcription profile of "BRD-K37798499":
 ```{}
-Mapping("BRD-K37798499")
-
-Definition of parameters:
-#"BRD-K37798499" is name of a drug/small compound molecule. 
+Mapping()
 ```
 
 You can find the results in your current directory.
@@ -66,12 +63,11 @@ landmark genes, and single-cell morphological features including the direction o
 
 Example of application:
 ```{}
-CellMorphologyEnrichmentAnalysis(20, "BRD-K37798499") 
-crossTabulation(20, "BRD-K37798499")        
+CellMorphologyEnrichmentAnalysis(20) 
+crossTabulation(20)        
 
 Definition of parameters:
-#20 is the number of first top cell morphological features 
-#"BRD-K37798499" is name of a drug/small compound molecule.
+The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20). This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
 ```
 
 You can find the results in your current directory.
@@ -83,11 +79,10 @@ We use the RankCellMorphologicalFeatures() function to consider the connectivity
 Example of application:
    
 ```{}
-RankCellMorphologicalFeatures(20, 20, "BRD-K37798499") 
+RankCellMorphologicalFeatures(20) 
 
 Definition of parameters:
-#20 is the number of first top cell morphological features 
-#"BRD-K37798499" is name of a drug/small compound molecule.
+The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20). This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
 ```
 You can find the results in your current directory.
 
@@ -97,13 +92,12 @@ We use an association mining model to detect the associations between the genes 
 
 Example of application:
 ```{}
-GRN(10, 0.1, 0.6, "BRD-K37798499") 
+GRN(10, 0.1, 0.6) 
 
 Definition of parameters:
-#10 is the number of first top cell morphological features. 
-#0.1 is the proportion of cell morphological features which are associated with an indicated gene set (Support). 
-#0.6 is an indication of how often the rule has been found to be true (confidence).
-#"BRD-K37798499" is name of a drug/small compound molecule.
+#The number of first top cell morphological features (e.g. 10): We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis. This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
+#Support parameter (e.g. 0.1): We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Support measures the frequency of an indicated gene in the cell morphological gene sets. 
+#Confidence parameter (e.g. 0.6): We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Confidence shows how often a given association rule between two genes has been found in the dataset.
 ```
 You can find the results in your current directory.
 
