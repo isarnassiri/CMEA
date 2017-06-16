@@ -5,12 +5,10 @@
 \alias{CellMorphologyEnrichmentAnalysis}
 \title{{Cell morphology enrichment analysis}}
 \usage{
-CellMorphologyEnrichmentAnalysis(number_of_features, input)
+CellMorphologyEnrichmentAnalysis(number_of_features)
 }
 \arguments{
 \item{number_of_features}{A Number}
-
-\item{input}{A character}
 }
 \description{
 {We use a stepwise variable selection approach, including combination of least absolute shrinkage and selection operator (LASSO) with cross-validation to tune parameter for cell morphology enrichment analysis. We consider all transcriptomic profiles in the reference repository as inputs of LASSO to select a subset of landmark genes (v) that best describe an indicated profile of cell morphology feature. }
@@ -19,7 +17,8 @@ CellMorphologyEnrichmentAnalysis(number_of_features, input)
 {
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
-CellMorphologyEnrichmentAnalysis(20, "BRD-K37798499") 
+data(Query_Transcriptomic_Profile)
+CellMorphologyEnrichmentAnalysis(20) 
 }
 }
 \author{

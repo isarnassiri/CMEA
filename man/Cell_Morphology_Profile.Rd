@@ -4,7 +4,7 @@
 \name{Cell_Morphology_Profile}
 \alias{Cell_Morphology_Profile}
 \title{{Single cell morphological profile}}
-\format{An object of class \code{data.frame} with 163 rows and 812 columns.}
+\format{An object of class \code{data.frame} with 162 rows and 812 columns.}
 \usage{
 Cell_Morphology_Profile
 }

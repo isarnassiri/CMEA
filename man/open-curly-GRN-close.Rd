@@ -5,7 +5,7 @@
 \alias{GRN}
 \title{{Gene regulatory network of cell morphological phenotypes}}
 \usage{
-GRN(number_of_features, support, confidence, input)
+GRN(number_of_features, support, confidence)
 }
 \arguments{
 \item{number_of_features}{A Number}
@@ -13,8 +13,6 @@ GRN(number_of_features, support, confidence, input)
 \item{support}{A Number}
 
 \item{confidence}{A Number}
-
-\item{input}{A character}
 }
 \description{
 {We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes. .}
@@ -23,7 +21,8 @@ GRN(number_of_features, support, confidence, input)
 {
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
-GRN(10, 0.1, 0.6, "BRD-K37798499") 
+data(Query_Transcriptomic_Profile)
+GRN(10, 0.1, 0.6) 
 }
 }
 \author{

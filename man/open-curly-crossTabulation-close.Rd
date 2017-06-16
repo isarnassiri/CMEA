@@ -5,12 +5,10 @@
 \alias{crossTabulation}
 \title{{Cross-tabulation of landmark genes, and single-cell morphological features}}
 \usage{
-crossTabulation(TOP, input)
+crossTabulation(TOP)
 }
 \arguments{
 \item{TOP}{A Number}
-
-\item{input}{A character}
 }
 \description{
 {We present the results of cell morphology enrichment analysis as cross-tabulation of landmark genes, and single-cell morphological features including the direction of effects (up or down regulation).}
@@ -19,7 +17,8 @@ crossTabulation(TOP, input)
 {
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
-crossTabulation(20, "BRD-K37798499") 
+data(Query_Transcriptomic_Profile)
+crossTabulation(20) 
 }
 }
 \author{

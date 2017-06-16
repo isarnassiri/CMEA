@@ -4,7 +4,7 @@
 \name{Transcriptomic_Profile}
 \alias{Transcriptomic_Profile}
 \title{{Transcriptomic Profiles of U-2 OS cells in response to the perturbations with drugs and small molecules}}
-\format{An object of class \code{data.frame} with 163 rows and 978 columns.}
+\format{An object of class \code{data.frame} with 162 rows and 978 columns.}
 \usage{
 Transcriptomic_Profile
 }

@@ -5,12 +5,10 @@
 \alias{RankCellMorphologicalFeatures}
 \title{{Ranking of cell morphological phenotypes based on the Strength Centrality Score (SCS).}}
 \usage{
-RankCellMorphologicalFeatures(TOP, input)
+RankCellMorphologicalFeatures(TOP)
 }
 \arguments{
 \item{TOP}{A Number}
-
-\item{input}{A character}
 }
 \description{
 {We consider the connectivity and centrality of cell morphological features in Cosine similarity network of image-based cell morphological profile to rank them based on the Strength Centrality Score (SCS).}
@@ -19,7 +17,8 @@ RankCellMorphologicalFeatures(TOP, input)
 {
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
-RankCellMorphologicalFeatures(20, "BRD-K37798499") 
+data(Query_Transcriptomic_Profile)
+RankCellMorphologicalFeatures(20) 
 }
 }
 \author{
