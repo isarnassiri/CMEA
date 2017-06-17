@@ -24,7 +24,7 @@
 #'@param confidence A Number
 #'@arguments {
 #'@item{A Number}{
-#'We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis.
+#'The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
 #'}(number_of_features)
 #'@item{A Number}{
@@ -284,7 +284,7 @@ GRN <- function(number_of_features, support, confidence)
 #'@param number_of_features A Number
 #'@arguments {
 #'@item{A Number}{
-#'We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis.
+#'The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
 #'}(number_of_features)  
 #'}
@@ -437,7 +437,7 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
 #'@param TOP A Number
 #'@arguments {
 #'@item{A Number}{
-#'We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis.
+#'The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
 #'}(TOP)  
 #'}
