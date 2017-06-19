@@ -8,7 +8,10 @@
 CellMorphologyEnrichmentAnalysis(number_of_features)
 }
 \arguments{
-\item{number_of_features}{A Number}
+\item{number_of_features}{{
+The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
+This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
+}}
 }
 \description{
 {We use a stepwise variable selection approach, including combination of least absolute shrinkage and selection operator (LASSO) with cross-validation to tune parameter for cell morphology enrichment analysis. We consider all transcriptomic profiles in the reference repository as inputs of LASSO to select a subset of landmark genes (v) that best describe an indicated profile of cell morphology feature. }
@@ -18,7 +21,7 @@ CellMorphologyEnrichmentAnalysis(number_of_features)
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
 data(Query_Transcriptomic_Profile)
-CellMorphologyEnrichmentAnalysis(20) 
+CellMorphologyEnrichmentAnalysis(20)
 }
 }
 \author{

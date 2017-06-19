@@ -8,7 +8,10 @@
 RankCellMorphologicalFeatures(TOP)
 }
 \arguments{
-\item{TOP}{A Number}
+\item{TOP}{{
+The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
+This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
+}}
 }
 \description{
 {We consider the connectivity and centrality of cell morphological features in Cosine similarity network of image-based cell morphological profile to rank them based on the Strength Centrality Score (SCS).}
@@ -18,7 +21,7 @@ RankCellMorphologicalFeatures(TOP)
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
 data(Query_Transcriptomic_Profile)
-RankCellMorphologicalFeatures(20) 
+RankCellMorphologicalFeatures(20)
 }
 }
 \author{

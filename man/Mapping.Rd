@@ -8,10 +8,10 @@
 Mapping()
 }
 \description{
-{We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) 
+{We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T)
 to detect similarities among these profiles (s).
 First, we convert the query and backend repository of transcription profiles to the Boolean expression and replace up-regulated values with one and down regulated
-values with zero. We provide a confusion matrix for the intersection of the query with each of the transcriptomic profiles in the reference repository. 
+values with zero. We provide a confusion matrix for the intersection of the query with each of the transcriptomic profiles in the reference repository.
 Next, we use the confusion matrices to score the similarity between the query and reference transcription profiles based on the Matthew correlation value.
 }
 }
@@ -20,7 +20,7 @@ Next, we use the confusion matrices to score the similarity between the query an
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
 data(Query_Transcriptomic_Profile)
-Mapping() 
+Mapping()
 }
 }
 \author{

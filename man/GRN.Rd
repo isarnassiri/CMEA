@@ -8,11 +8,21 @@
 GRN(number_of_features, support, confidence)
 }
 \arguments{
-\item{number_of_features}{A Number}
+\item{number_of_features}{{
+The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
+This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
+}}
 
-\item{support}{A Number}
+\item{support}{{
+We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from
+the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Support measures the frequency of an indicated gene in the cell morphological gene sets.
+}}
 
-\item{confidence}{A Number}
+\item{confidence}{{
+We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from
+the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Confidence shows how often a given association
+rule between two genes has been found in the dataset.
+}}
 }
 \description{
 {We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes. .}
@@ -22,7 +32,7 @@ GRN(number_of_features, support, confidence)
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
 data(Query_Transcriptomic_Profile)
-GRN(10, 0.1, 0.6) 
+GRN(10, 0.1, 0.6)
 }
 }
 \author{
