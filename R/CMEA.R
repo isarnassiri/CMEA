@@ -895,10 +895,10 @@ Mapping <- function()
   CMP_subset <<- L1000_MP_profiles[selected_drugs,]
   TP_subset <<- L1000_TP_profiles[selected_drugs,]
 
-#-- Save data --
-return(CMP_subset)
-return(TP_subset)
+  #-- Save data --
+  return(CMP_subset)
+  return(TP_subset)
 
-print("You can find the results in the CMP_subset and TP_subset R objects.")
+  print("You can find the results in the CMP_subset and TP_subset R objects.")
 
 }

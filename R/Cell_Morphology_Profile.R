@@ -1,6 +1,12 @@
 #'@title{Single cell morphological profile}
 #'@description{
-#'We demonstrate the application of the CMEA package by using the single cell morphological profiles of human bone osteosarcoma cells (U-2 OS cells) in response to the 9515 drugs or small molecule compounds (1). The raw data include the single cell morphological profiles of 19864 drugs and small compound molecules, and processed version of this data is available as supplementary of (2). The intersection of transcriptomic and single-cell morphological profiles includes 9515 drugs and small compound molecules, and use as a backend repository of CMEA package. The cell morphological profile in backend repository is 9515*978 matric, including the fold change of the 978 landmark gene expression in response to the treatment of U-2 OS cells with 9515 drugs and small compound molecules.#'}
+#'We demonstrate the application of the CMEA package by using the single cell morphological profiles of human bone osteosarcoma cells (U-2 OS cells) in response to 
+#'the 9515 drugs or small molecule compounds (1). The raw data include the single cell morphological profiles of 19864 drugs and small compound molecules, 
+#'and processed version of this data is available as supplementary of (2). The intersection of transcriptomic and single-cell morphological profiles 
+#'includes 9515 drugs and small compound molecules, and use as a backend repository of CMEA package. The cell morphological profile in backend repository 
+#'is 9515*978 matric, including the fold change of the 978 landmark gene expression in response to the treatment of U-2 OS cells with 9515 drugs and small compound 
+#'molecules. We use subset of complete data set as an example (162 profles), and complete data are available at (https://bitbucket.org/isarnassiri/cmeadata).
+#'}
 #'@references{
 #'1. Wawer, M.J., Jaramillo, D.E., Dancik, V., Fass, D.M., Haggarty, S.J., Shamji, A.F., Wagner, B.K., Schreiber, S.L. and Clemons, P.A. (2014) Automated Structure-Activity Relationship Mining: Connecting Chemical Structure to Biological Profiles. Journal of Biomolecular Screening, 19,738-748.
 #'2. Wang, Z., Clark, N.R. and Ma'ayan, A. (2016) Drug-induced adverse events prediction with the LINCS L1000 data. Bioinformatics, 32, 2338-2345.
