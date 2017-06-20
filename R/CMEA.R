@@ -10,38 +10,34 @@
 #' @importFrom PANR assoScore
 #'
 #'@export
-#'@name{GRN}
-#'@alias{GRN}
-#'@alias{number_of_features}
-#'@alias{support}
-#'@alias{confidence}
-#'@title{Gene regulatory network of cell morphological phenotypes}
-#'@description{We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes. .}
-#'@author{Isar Nassiri, Matthew McCall}
-#'@param number_of_features {
+#'@name GRN
+#'@alias GRN
+#'@alias number_of_features
+#'@alias support
+#'@alias confidence
+#'@title Gene regulatory network of cell morphological phenotypes
+#'@description We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes. 
+#'@author {Isar Nassiri, Matthew McCall}
+#'@param number_of_features 
 #'The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
-#'}
-#'@param support {
+#'@param support
 #'We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from
 #'the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Support measures the frequency of an indicated gene in the cell morphological gene sets.
-#'}
-#'@param confidence {
+#'@param confidence 
 #'We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from
 #'the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Confidence shows how often a given association
 #'rule between two genes has been found in the dataset.
-#'}
 #'@arguments {
 #'@item{A Number}(number_of_features)
 #'@item{A Number}(support)
 #'@item{A Number}(confidence)
 #'}
-#'@examples{
+#'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
 #'data(Query_Transcriptomic_Profile)
 #'GRN(10, 0.1, 0.6)
-#'}
 #'@export
 
 GRN <- function(number_of_features, support, confidence)
@@ -149,7 +145,7 @@ GRN <- function(number_of_features, support, confidence)
 
   for(i in 1:length(MCR))
   {
-    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=T), stringsAsFactors=FALSE)
+    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE)
     df2 <- rep(names(MCR[i]), dim(df)[2])
     df3 <-  rbind(df,df2)
     df4 <-  cbind(df3,df4)
@@ -176,7 +172,7 @@ GRN <- function(number_of_features, support, confidence)
 
     for(i in 1:length(MCR))
     {
-      df <- as.character(as.data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=T), stringsAsFactors=FALSE))
+      df <- as.character(as.data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE))
       class(df)
       if(0<length(intersect(as.character(all_genes_in_MCR$gene_name[j]), df))) { in_gene_set <- in_gene_set + 1  }
     }
@@ -218,7 +214,7 @@ GRN <- function(number_of_features, support, confidence)
 
     for(i in 1:length(MCR))
     {
-      df <- as.character(as.data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=T), stringsAsFactors=FALSE))
+      df <- as.character(as.data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE))
 
       if(2 == length(intersect(c(as.character(combination_all_genes_in_MCR$gene1[j]), as.character(combination_all_genes_in_MCR$gene2[j])),df)))
         { in_gene_set <- in_gene_set + 1  }
@@ -276,25 +272,21 @@ GRN <- function(number_of_features, support, confidence)
 }
 
 #'@export
-#'@name{CellMorphologyEnrichmentAnalysis}
-#'@alias{CellMorphologyEnrichmentAnalysis}
-#'@alias{number_of_features}
-#'@title{Cell morphology enrichment analysis}
-#'@description{We use a stepwise variable selection approach, including combination of least absolute shrinkage and selection operator (LASSO) with cross-validation to tune parameter for cell morphology enrichment analysis. We consider all transcriptomic profiles in the reference repository as inputs of LASSO to select a subset of landmark genes (v) that best describe an indicated profile of cell morphology feature. }
-#'@author{Isar Nassiri, Matthew McCall}
-#'@param number_of_features {
+#'@name CellMorphologyEnrichmentAnalysis
+#'@alias CellMorphologyEnrichmentAnalysis
+#'@alias number_of_features
+#'@title Cell morphology enrichment analysis
+#'@description We use a stepwise variable selection approach, including combination of least absolute shrinkage and selection operator (LASSO) with cross-validation to tune parameter for cell morphology enrichment analysis. We consider all transcriptomic profiles in the reference repository as inputs of LASSO to select a subset of landmark genes (v) that best describe an indicated profile of cell morphology feature.
+#'@author {Isar Nassiri, Matthew McCall}
+#'@param number_of_features
 #'The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
-#'}
-#'@arguments {
-#'@item{A Number}(number_of_features)
-#'}
-#'@examples{
+#'@arguments item{A Number}(number_of_features)
+#'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
 #'data(Query_Transcriptomic_Profile)
 #'CellMorphologyEnrichmentAnalysis(20)
-#'}
 #'@export
 
 CellMorphologyEnrichmentAnalysis <- NULL
@@ -434,25 +426,21 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
  }
 
 #'@export
-#'@name{RankCellMorphologicalFeatures}
-#'@alias{RankCellMorphologicalFeatures}
-#'@alias{TOP}
-#'@title{Ranking of cell morphological phenotypes based on the Strength Centrality Score (SCS).}
-#'@description{We consider the connectivity and centrality of cell morphological features in Cosine similarity network of image-based cell morphological profile to rank them based on the Strength Centrality Score (SCS).}
+#'@name RankCellMorphologicalFeatures
+#'@alias RankCellMorphologicalFeatures
+#'@alias TOP
+#'@title {Ranking of cell morphological phenotypes based on the Strength Centrality Score (SCS).}
+#'@description We consider the connectivity and centrality of cell morphological features in Cosine similarity network of image-based cell morphological profile to rank them based on the Strength Centrality Score (SCS).
 #'@author{Isar Nassiri, Matthew McCall}
-#'@param TOP {
+#'@param TOP
 #'The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
-#'}
-#'@arguments {
-#'@item{A Number}(TOP)
-#'}
-#'@examples{
+#'@arguments item{A Number}(TOP)
+#'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
 #'data(Query_Transcriptomic_Profile)
 #'RankCellMorphologicalFeatures(20)
-#'}
 #'@export
 
 RankCellMorphologicalFeatures <- function(TOP)
@@ -609,28 +597,26 @@ RankCellMorphologicalFeatures <- function(TOP)
  }
   
 #'@export   
-#'@name{crossTabulation}
-#'@alias{crossTabulation}
-#'@alias{TOP}
-#'@title{Cross-tabulation of landmark genes, and single-cell morphological features}
-#'@description{We present the results of cell morphology enrichment analysis as cross-tabulation of landmark genes, and single-cell morphological features including the direction of effects (up or down regulation).}
-#'@author{Isar Nassiri, Matthew McCall}
-#'@param TOP {
+#'@name crossTabulation
+#'@alias crossTabulation
+#'@alias TOP
+#'@title {Cross-tabulation of landmark genes, and single-cell morphological features}
+#'@description We present the results of cell morphology enrichment analysis as cross-tabulation of landmark genes, and single-cell morphological features including the direction of effects (up or down regulation).
+#'@author {Isar Nassiri, Matthew McCall}
+#'@param TOP
 #'We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis.
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
-#'}
 #'@arguments {
 #'@item{A Number}{
 #'We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis.
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
 #'}(TOP)
 #'}
-#'@examples{
+#'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
 #'data(Query_Transcriptomic_Profile)
 #'crossTabulation(20) 
-#'}
 #'@export 
  
 crossTabulation <- function(TOP)
@@ -829,22 +815,20 @@ print("You can find the results in the 'crossTable' R object")
 
 }
 
-#'@name{Mapping}
-#'@alias{Mapping}
-#'@title{Mapping query transcriptomic profile against the reference repository}
-#'@description{We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T)
-#'to detect similarities among these profiles (s).
+#'@name Mapping
+#'@alias Mapping
+#'@title Mapping query transcriptomic profile against the reference repository
+#'@description {We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) to detect similarities among these profiles (s).
 #'First, we convert the query and backend repository of transcription profiles to the Boolean expression and replace up-regulated values with one and down regulated
 #'values with zero. We provide a confusion matrix for the intersection of the query with each of the transcriptomic profiles in the reference repository.
 #'Next, we use the confusion matrices to score the similarity between the query and reference transcription profiles based on the Matthew correlation value.
 #'}
-#'@author{Isar Nassiri, Matthew McCall}
-#'@examples{
+#'@author {Isar Nassiri, Matthew McCall}
+#'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
 #'data(Query_Transcriptomic_Profile)
 #'Mapping()
-#'}
 #'@export
 
 Mapping <- NULL
