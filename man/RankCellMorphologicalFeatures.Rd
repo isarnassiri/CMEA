@@ -14,9 +14,9 @@ This parameter specifies the number of first top cell morphological features whi
 We consider the connectivity and centrality of cell morphological features in Cosine similarity network of image-based cell morphological profile to rank them based on the Strength Centrality Score (SCS).
 }
 \examples{
-data(Transcriptomic_Profile)
-data(Cell_Morphology_Profile)
-data(Query_Transcriptomic_Profile)
+data(TranscriptomicProfile)
+data(CellMorphologyProfile)
+data(QueryTranscriptomicProfile)
 RankCellMorphologicalFeatures(20)
 }
 \author{
