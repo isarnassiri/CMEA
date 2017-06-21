@@ -21,9 +21,9 @@ rule between two genes has been found in the dataset.}
 We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes.
 }
 \examples{
-data(TranscriptomicProfile)
-data(CellMorphologyProfile)
-data(QueryTranscriptomicProfile)
+data(Transcriptomic_Profile)
+data(Cell_Morphology_Profile)
+data(Query_Transcriptomic_Profile)
 GRN(10, 0.1, 0.6)
 }
 \author{

@@ -1,6 +1,6 @@
 Package: CMEA
 Title: CMEA: An R package for Systematic Exploration of Single-Cell Morphological Phenotypes from Transcriptomic Profile
-Version: 0.99.23
+Version: 0.99.24
 Authors@R: c(person("Isar", "Nassiri", email = "isar_nassiri@urmc.rochester.edu", role = c("aut", "cre")))
 Description: CMEA is a tool for cell morphology enrichment analysis and link transcriptomic alterations with cell morphological phenotypes. In our approach we (1) map the transcriptomic profile of a query against the L1000 LINCS repository, (2) create a gene set repository for cell morphological features (CM), (3) identify the top CMs associated with alterations and analyze their direction of regulation, and (4) model a regulatory network of cell morphological phenotypes.
 Depends: R (>= 3.4), data.table, clusterSim, netbenchmark, glmnet, vegan, netbenchmark, PANR, gridExtra, ggplot2, qgraph

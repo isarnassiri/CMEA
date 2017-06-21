@@ -14,9 +14,9 @@ Next, we use the confusion matrices to score the similarity between the query an
 }
 }
 \examples{
-data(TranscriptomicProfile)
-data(CellMorphologyProfile)
-data(QueryTranscriptomicProfile)
+data(Transcriptomic_Profile)
+data(Cell_Morphology_Profile)
+data(Query_Transcriptomic_Profile)
 Mapping()
 }
 \author{

@@ -14,9 +14,9 @@ This parameter specifies the number of first top cell morphological features whi
 We present the results of cell morphology enrichment analysis as cross-tabulation of landmark genes, and single-cell morphological features including the direction of effects (up or down regulation).
 }
 \examples{
-data(TranscriptomicProfile)
-data(CellMorphologyProfile)
-data(QueryTranscriptomicProfile)
+data(Transcriptomic_Profile)
+data(Cell_Morphology_Profile)
+data(Query_Transcriptomic_Profile)
 crossTabulation(20) 
 }
 \author{

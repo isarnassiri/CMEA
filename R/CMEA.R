@@ -34,17 +34,17 @@
 #'@item{A Number}(confidence)
 #'}
 #'@examples
-#'data(TranscriptomicProfile)
-#'data(CellMorphologyProfile)
-#'data(QueryTranscriptomicProfile)
+#'data(Transcriptomic_Profile)
+#'data(Cell_Morphology_Profile)
+#'data(Query_Transcriptomic_Profile)
 #'GRN(10, 0.1, 0.6)
 #'@export
 
 GRN <- function(number_of_features, support, confidence)
 {
-  L1000_TP_profiles <- TranscriptomicProfile
-  L1000_MP_profiles <- CellMorphologyProfile
-  x_new <- QueryTranscriptomicProfile
+  L1000_TP_profiles <- Transcriptomic_Profile
+  L1000_MP_profiles <- Cell_Morphology_Profile
+  x_new <- Query_Transcriptomic_Profile
 
   query_binary <- ifelse(x_new > 0, 1, 0)
   repositoyr_binary <- ifelse(L1000_TP_profiles > 0, 1, 0)
@@ -283,9 +283,9 @@ GRN <- function(number_of_features, support, confidence)
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
 #'@arguments item{A Number}(number_of_features)
 #'@examples
-#'data(TranscriptomicProfile)
-#'data(CellMorphologyProfile)
-#'data(QueryTranscriptomicProfile)
+#'data(Transcriptomic_Profile)
+#'data(Cell_Morphology_Profile)
+#'data(Query_Transcriptomic_Profile)
 #'CellMorphologyEnrichmentAnalysis(20)
 #'@export
 
@@ -293,9 +293,9 @@ CellMorphologyEnrichmentAnalysis <- NULL
 CellMorphologyEnrichmentAnalysis <- function(number_of_features)
 {
 
-  L1000_TP_profiles <- TranscriptomicProfile
-  L1000_MP_profiles <- CellMorphologyProfile
-  x_new <- QueryTranscriptomicProfile
+  L1000_TP_profiles <- Transcriptomic_Profile
+  L1000_MP_profiles <- Cell_Morphology_Profile
+  x_new <- Query_Transcriptomic_Profile
 
   query_binary <- ifelse(x_new > 0, 1, 0)
   repositoyr_binary <- ifelse(L1000_TP_profiles > 0, 1, 0)
@@ -437,17 +437,17 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
 #'@arguments item{A Number}(TOP)
 #'@examples
-#'data(TranscriptomicProfile)
-#'data(CellMorphologyProfile)
-#'data(QueryTranscriptomicProfile)
+#'data(Transcriptomic_Profile)
+#'data(Cell_Morphology_Profile)
+#'data(Query_Transcriptomic_Profile)
 #'RankCellMorphologicalFeatures(20)
 #'@export
 
 RankCellMorphologicalFeatures <- function(TOP)
 {
-  L1000_TP_profiles <- TranscriptomicProfile
-  L1000_MP_profiles <- CellMorphologyProfile
-  x_new <- QueryTranscriptomicProfile
+  L1000_TP_profiles <- Transcriptomic_Profile
+  L1000_MP_profiles <- Cell_Morphology_Profile
+  x_new <- Query_Transcriptomic_Profile
 
   query_binary <- ifelse(x_new > 0, 1, 0)
   repositoyr_binary <- ifelse(L1000_TP_profiles > 0, 1, 0)
@@ -613,17 +613,17 @@ RankCellMorphologicalFeatures <- function(TOP)
 #'}(TOP)
 #'}
 #'@examples
-#'data(TranscriptomicProfile)
-#'data(CellMorphologyProfile)
-#'data(QueryTranscriptomicProfile)
+#'data(Transcriptomic_Profile)
+#'data(Cell_Morphology_Profile)
+#'data(Query_Transcriptomic_Profile)
 #'crossTabulation(20) 
 #'@export 
  
 crossTabulation <- function(TOP)
 {
-L1000_TP_profiles <- TranscriptomicProfile
-L1000_MP_profiles <- CellMorphologyProfile
-x_new <- QueryTranscriptomicProfile
+L1000_TP_profiles <- Transcriptomic_Profile
+L1000_MP_profiles <- Cell_Morphology_Profile
+x_new <- Query_Transcriptomic_Profile
 
 query_binary <- ifelse(x_new > 0, 1, 0)
 repositoyr_binary <- ifelse(L1000_TP_profiles > 0, 1, 0)
@@ -764,7 +764,7 @@ df5 <- datCM2[which(as.character(datCM2$feature) %in% as.character(Long$feature)
 df5 <- as.data.frame(df5)
 length(unique(as.character(df5[,2])))
 
-query <- as.data.frame(QueryTranscriptomicProfile)
+query <- as.data.frame(Query_Transcriptomic_Profile)
 
 for(i in 1:dim(df5)[1])
 {
@@ -825,9 +825,9 @@ print("You can find the results in the 'crossTable' R object")
 #'}
 #'@author {Isar Nassiri, Matthew McCall}
 #'@examples
-#'data(TranscriptomicProfile)
-#'data(CellMorphologyProfile)
-#'data(QueryTranscriptomicProfile)
+#'data(Transcriptomic_Profile)
+#'data(Cell_Morphology_Profile)
+#'data(Query_Transcriptomic_Profile)
 #'Mapping()
 #'@export
 
@@ -836,13 +836,13 @@ Mapping <- function()
 {
 
   #Load data
-  data(TranscriptomicProfile)
-  data(CellMorphologyProfile)
-  data(QueryTranscriptomicProfile)
+  data(Transcriptomic_Profile)
+  data(Cell_Morphology_Profile)
+  data(Query_Transcriptomic_Profile)
 
-  L1000_TP_profiles <- TranscriptomicProfile
-  L1000_MP_profiles <- CellMorphologyProfile
-  x_new <- QueryTranscriptomicProfile
+  L1000_TP_profiles <- Transcriptomic_Profile
+  L1000_MP_profiles <- Cell_Morphology_Profile
+  x_new <- Query_Transcriptomic_Profile
 
   query_binary <- ifelse(x_new > 0, 1, 0)
   repositoyr_binary <- ifelse(L1000_TP_profiles > 0, 1, 0)
