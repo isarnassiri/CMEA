@@ -48,20 +48,20 @@ GRN <- function(number_of_features, support, confidence)
   
   L1000_TP_profiles <- scale(L1000_TP_profiles)
   L1000_MP_profiles <- scale(L1000_MP_profiles)
-
+  
   query_binary <- ifelse(x_new > 0, 1, 0)
   repositoyr_binary <- ifelse(L1000_TP_profiles > 0, 1, 0)
-
+  
   performance <- data.frame()
   TP <- TN <- FP <- FN <- 0
-
+  
   for(j in 1:dim(repositoyr_binary)[1])
   {
     for(i in 1:dim(repositoyr_binary)[2])
     {
       a <- query_binary[i]  #my standard
       b <- repositoyr_binary[j,i]
-
+      
       if(a+b == 2) { TP <- TP + 1 }
       if(a+b == 0) { TN <- TN + 1 }
       if(a == 0 && b == 1) { FP <- FP + 1 }
@@ -74,60 +74,64 @@ GRN <- function(number_of_features, support, confidence)
     performance[j,5] <- ((TP*TN)-(FP*FN)) / sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN))
     TP <- TN <- FP <- FN <- 0
   }
-
+  
   colnames(performance) <- c("TP", "TN", "FP", "FN", "MCC")
   rownames(performance) <- rownames(repositoyr_binary)
-
+  
   selected_drugs <- which(performance[,5] > 0.1)
   length(selected_drugs)
-
+  
   CMP_subset <<- L1000_MP_profiles[selected_drugs,]
   TP_subset <<- L1000_TP_profiles[selected_drugs,]
-
+  dim(TP_subset)
+  
+  CMP_subset <- CMP_subset[-which(rownames(CMP_subset) %in% "BRD-K37798499"),]
+  TP_subset <- TP_subset[-which(rownames(TP_subset) %in% "BRD-K37798499"),]
+  
   MCR <- list();
-
+  
   for(i in 1:number_of_features)
   {
     x_new2 <- as.data.frame(CMP_subset[,i])
     colnames(x_new2) <- colnames(CMP_subset)[i]
-
+    
     x <- data.matrix(TP_subset)                #predictors
     y <- as.numeric(unlist(x_new2))            #response
-
+    
     set.seed(1)
     fit.lasso <- glmnet(x,y, standardize=TRUE)
     cv.lasso<-cv.glmnet(x,y)
     lam.best <- cv.lasso$lambda.min
-
+    
     #-- extract significant coefficients --
     Lasso_coefficient <- coef(fit.lasso, s=cv.lasso$lambda.min)
     Lasso_coefficient <- as.matrix(Lasso_coefficient)
-
+    
     inds <- which(Lasso_coefficient[,1]!=0)
     variables<-row.names(Lasso_coefficient)[inds]
     variables<-variables[!(variables %in% '(Intercept)')];
-
+    
     length(which(0 != Lasso_coefficient[,1]))
     results <- as.data.frame(Lasso_coefficient[which(0 != Lasso_coefficient[,1]),1])
     colnames(results) <- "coef"
     results <- as.data.frame(results[-1,,FALSE])
     dim(results)
     selected_genes <- rownames(results)
-
+    
     ste_name <- data.frame();
-
+    
     LL <- NULL
     LL <- (length(selected_genes))
-
+    
     if(0<length(selected_genes))
     {
       selected_GO <- selected_genes
-
+      
       for(j2 in 1:LL)
       {
         ste_name[j2,1] <- selected_GO[j2]
       }
-
+      
       if(!is.null(ste_name$V1))
       {
         MCR[[i]] <- ste_name[complete.cases(ste_name),1]
@@ -138,14 +142,14 @@ GRN <- function(number_of_features, support, confidence)
       }
     }
   }
-
+  
   #-- Remove cm terms without any associated gene set
   null_cms <- which(sapply(MCR, is.null))
   if(0<length(null_cms)){ MCR <- MCR[-c(null_cms)] }
   #--
-
+  
   df4 <- data.frame(c("gene","pathway"))
-
+  
   for(i in 1:length(MCR))
   {
     df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE)
@@ -153,122 +157,122 @@ GRN <- function(number_of_features, support, confidence)
     df3 <-  rbind(df,df2)
     df4 <-  cbind(df3,df4)
   }
-
+  
   length(names(MCR))
-
+  
   df4 <- t(df4)
   colnames(df4) <- c("name","feature")
   df4 <- (df4[-dim(df4)[1],])
-
+  dim(df4)
+  
   #-- Association analysis
-
+  
   all_genes_in_MCR <- as.data.frame(unique(df4[,1]))
   colnames(all_genes_in_MCR) <- "gene_name"
   dim(all_genes_in_MCR)
-
+  
   #-- Support(X)
-
+  
   in_gene_set <- 0
-
+  
   for(j in 1:length(all_genes_in_MCR$gene_name))
   {
-
+    
     for(i in 1:length(MCR))
     {
       df <- as.character(as.data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE))
       class(df)
       if(0<length(intersect(as.character(all_genes_in_MCR$gene_name[j]), df))) { in_gene_set <- in_gene_set + 1  }
     }
-
+    
     all_genes_in_MCR[j,2] <- in_gene_set/length(MCR)
     in_gene_set <- 0
   }
-
+  
   all_genes_in_MCR_t <- all_genes_in_MCR[which(all_genes_in_MCR$V2 > support),]
   dim(all_genes_in_MCR_t)
-
+  
   #-- Combination of genes --
-
+  
   combination_all_genes_in_MCR <- expand.grid(all_genes_in_MCR_t$gene_name, all_genes_in_MCR_t$gene_name)
   class(combination_all_genes_in_MCR)
   colnames(combination_all_genes_in_MCR) <- c("gene1","gene2")
-
+  
   #-- Remove self-loops --
-
+  
   o <- 1
-
+  
   selfloop <- data.frame()
-
+  
   for(j in 1:dim(combination_all_genes_in_MCR)[1])
   {
     if(0 < length(which(as.character(combination_all_genes_in_MCR$gene1[j]) %in% as.character(combination_all_genes_in_MCR$gene2[j]))))
-      { selfloop[o,1] <- j; o = o + 1 }
+    { selfloop[o,1] <- j; o = o + 1 }
   }
-
+  
   combination_all_genes_in_MCR <- combination_all_genes_in_MCR[-as.numeric(selfloop$V1),]
   dim(combination_all_genes_in_MCR)
-
+  
   #--- Support(X,Y) + confidence ---
-
+  
   in_gene_set <- 0
-
+  
   for(j in 1:dim(combination_all_genes_in_MCR)[1])
   {
-
+    
     for(i in 1:length(MCR))
     {
       df <- as.character(as.data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE))
-
+      
       if(2 == length(intersect(c(as.character(combination_all_genes_in_MCR$gene1[j]), as.character(combination_all_genes_in_MCR$gene2[j])),df)))
-        { in_gene_set <- in_gene_set + 1  }
+      { in_gene_set <- in_gene_set + 1  }
     }
-
+    
     combination_all_genes_in_MCR[j,3] <- in_gene_set/length(MCR)
-
+    
     combination_all_genes_in_MCR[j,4] <-
-    (in_gene_set/length(MCR))/all_genes_in_MCR_t[which(all_genes_in_MCR_t$gene_name %in% as.character(combination_all_genes_in_MCR$gene1[j])),2]
-
+      (in_gene_set/length(MCR))/all_genes_in_MCR_t[which(all_genes_in_MCR_t$gene_name %in% as.character(combination_all_genes_in_MCR$gene1[j])),2]
+    
     in_gene_set <- 0
   }
-
+  
   colnames(combination_all_genes_in_MCR) <- c("gene1","gene2","supp(XvY)","Confidence")
-
+  
   combination_all_genes_in_MCR_sig <- combination_all_genes_in_MCR[combination_all_genes_in_MCR$Confidence > confidence,]
   edgelist2 <- paste(combination_all_genes_in_MCR_sig[,1], combination_all_genes_in_MCR_sig[,2], sep = "~")
   length(edgelist2)
-
+  
   # correlation network:
   clr <- clr.wrap(TP_subset)
-
+  
   graph <- graph.adjacency(clr)
   edgelist <- get.edgelist(graph)
   edgelist1 <- paste(edgelist[,1], edgelist[,2], sep = "~")
   length(edgelist1)
-
+  
   #-- comparison of rules and correlation
-
+  
   selected_edges <- edgelist1[which(edgelist1 %in% edgelist2)]
   length(selected_edges)
-
+  
   #Visulization of graph
   graph_e <- data.frame()
-
+  
   for (i in 1:length(selected_edges))
   {
     e_ <- unlist(strsplit(selected_edges[i], "~"))
     graph_e[i,1] <- e_[1]
     graph_e[i,2] <- e_[2]
   }
-
+  
   matrix_of_interactions <- as.matrix(graph_e)
   colnames(matrix_of_interactions) <- c("geneSymbol", "geneSymbol2")
   GeneRegulatoryNetwork <<- matrix_of_interactions[!duplicated(matrix_of_interactions),]
   dim(GeneRegulatoryNetwork)
   length(unique(c(graph_e[,1],graph_e[,2])))
-
+  
   # -- Save data --
-  return(CMP_subset)
-  return(TP_subset)
+  return(GeneRegulatoryNetwork)
   
   print("You can find the results in the 'GeneRegulatoryNetwork' R object.")
 
