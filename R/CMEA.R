@@ -148,7 +148,7 @@ GRN <- function(number_of_features, support, confidence)
 
   for(i in 1:length(MCR))
   {
-    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE)
+    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUERUE), stringsAsFactors=FALSE)
     df2 <- rep(names(MCR[i]), dim(df)[2])
     df3 <-  rbind(df,df2)
     df4 <-  cbind(df3,df4)
@@ -175,7 +175,7 @@ GRN <- function(number_of_features, support, confidence)
     
     for(i in 1:length(MCR))
     {
-      df <- as.character(as.data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=T), stringsAsFactors=FALSE))
+      df <- as.character(as.data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE))
       class(df)
       if(0<length(intersect(as.character(all_genes_in_MCR$gene_name[j]), df))) { in_gene_set <- in_gene_set + 1  }
     }
@@ -218,7 +218,7 @@ GRN <- function(number_of_features, support, confidence)
     
     for(i in 1:length(MCR))
     {
-      df <- as.character(as.data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=T), stringsAsFactors=FALSE))
+      df <- as.character(as.data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE))
        
       if(2 == length(intersect(c(as.character(combination_all_genes_in_MCR$gene1[j]), as.character(combination_all_genes_in_MCR$gene2[j])),df)))
         { in_gene_set <- in_gene_set + 1  }
@@ -414,7 +414,7 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
 
   for(i in 1:length(MCR))
   {
-    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE)
+    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUERUE), stringsAsFactors=FALSE)
     df2 <- rep(names(MCR[i]), dim(df)[2])
     df3 <-  rbind(df,df2)
     df4 <-  cbind(df3,df4)

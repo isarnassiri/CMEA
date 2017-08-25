@@ -3,7 +3,6 @@
 export(CellMorphologyEnrichmentAnalysis)
 export(GRN)
 export(Mapping)
-export(crossTabulation)
 importFrom(clusterSim,data.Normalization)
 importFrom(data.table,setDT)
 importFrom(glmnet,glmnet)
