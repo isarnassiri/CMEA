@@ -3,7 +3,6 @@
 #' @importFrom netbenchmark clr.wrap
 #' @importFrom data.table setDT
 #' @importFrom glmnet glmnet
-#' @importFrom igraph graph.adjacency
 #'
 
 #'@export
