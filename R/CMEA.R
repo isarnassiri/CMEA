@@ -1,13 +1,10 @@
 #' @export
 #' @import ggplot2
 #' @importFrom clusterSim data.Normalization
-#' @import netbenchmark
-#' @import gridExtra
-#' @import data.table
-#' @import glmnet
-#' @import vegan
-#' @import qgraph
-#' @importFrom PANR assoScore
+#' @importFrom netbenchmark clr.wrap
+#' @importFrom data.table setDT
+#' @importFrom glmnet glmnet
+#' @importFrom igraph graph.adjacency
 #'
 #'@export
 #'@name GRN
@@ -607,24 +604,8 @@ agregatation$id <- sprintf("Cluster_%d", agregatation$id)             #Add term 
 agregatation <- as.data.frame(agregatation)
 length(agregatation$feature)
 
-#---------------------------
-CMP_subset2 <- as.matrix(CMP_subset[,which(colnames(CMP_subset) %in% agregatation$feature)])
-
-cor_bfi <- assoScore(CMP_subset2, "cosine", upperTri=FALSE, transform=FALSE)
-as <- centralityTable(cor_bfi)
-as_strength <- as[which(as$measure == "Strength"), ]
-
-colnames(as_strength) <- c("graph", "type", "feature", "variable", "Strength_centrality")
-as_strength <- as_strength[ , c(3,5)]
-agregatation <- merge(agregatation, as_strength, by = "feature")
-
-Long <- as_strength[order(as_strength[, 2], decreasing=TRUE)[1:TOP],]
-Long$type <- rep(1, dim(Long)[1])
-
 #-- visulization of crosstab table ---
-datCM2 <- as.data.frame(datCM2)
-df5 <- datCM2[which(as.character(datCM2$feature) %in% as.character(Long$feature)),]
-df5 <- as.data.frame(df5)
+df5 <- as.data.frame(datCM2)
 length(unique(as.character(df5[,2])))
 
 query <- as.data.frame(Query_Transcriptomic_Profile)
