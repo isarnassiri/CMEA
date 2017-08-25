@@ -29,6 +29,7 @@
 #'@item{A Number}(support)
 #'@item{A Number}(confidence)
 #'}
+#'value{selected_edges}(List of gene-gene interactions)
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
@@ -109,7 +110,7 @@ GRN <- function(number_of_features, support, confidence)
     y <- as.numeric(unlist(x_new2))            #response
 
     set.seed(1)
-	fit.lasso <- glmnet(x, y, standardize=T)
+	fit.lasso <- glmnet(x, y, standardize=TRUE)
 
 	#--- select Lambda ------
 	train=sample(seq(dim(x)[1]),(dim(x)[1]/2),replace=FALSE)
@@ -292,9 +293,11 @@ GRN <- function(number_of_features, support, confidence)
   matrix_of_interactions <- as.matrix(graph_e)
   colnames(matrix_of_interactions) <- c("geneSymbol", "geneSymbol2")
   matrix_of_interactions <- matrix_of_interactions[!duplicated(matrix_of_interactions),]
+  
   # -- Save data --
   return(CMP_subset)
   return(TP_subset)
+  return(selected_edges)
   
   print("You can find the results in the 'GeneRegulatoryNetwork' R object.")
 
@@ -311,6 +314,7 @@ GRN <- function(number_of_features, support, confidence)
 #'The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
 #'@arguments item{A Number}(number_of_features)
+#'value{CellMorphologyEnrichment}(Repository of gene sets)
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
@@ -396,7 +400,7 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
     y <- as.numeric(unlist(x_new2))            #response
 
     set.seed(1)
-	fit.lasso <- glmnet(x, y, standardize=T)
+	fit.lasso <- glmnet(x, y, standardize=TRUE)
 	  
 	#--- select Lambda ------
 	train=sample(seq(dim(x)[1]),(dim(x)[1]/2),replace=FALSE)
@@ -473,7 +477,7 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
   setDT(agregatation)[, id := .GRP, by = name]
   agregatation <- agregatation[order(agregatation$id, decreasing=FALSE),]
   agregatation$id <- sprintf("Cluster_%d", agregatation$id)
-  CellMorphologyEnrichment <<- as.data.frame(agregatation)
+  CellMorphologyEnrichment <- as.data.frame(agregatation)
   length(CellMorphologyEnrichment$feature)
   
   #-- Save data --
@@ -494,6 +498,7 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
 #'Next, we use the confusion matrices to score the similarity between the query and reference transcription profiles based on the Matthew correlation value.
 #'}
 #'@author {Isar Nassiri, Matthew McCall}
+#'value{selected_drugs}(List of similar drugs and small compound molecules with a query)
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
@@ -571,6 +576,7 @@ Mapping <- function()
   #-- Save data --
   return(CMP_subset)
   return(TP_subset)
+  return(selected_drugs)
 
   print("You can find the results in the CMP_subset and TP_subset R objects.")
 
@@ -592,6 +598,7 @@ Mapping <- function()
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
 #'}(TOP)
 #'}
+#'value{crossTable}(A contingency table of association between genes and cell morphological features)
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
@@ -675,7 +682,7 @@ for(i in 1:TOP)
     y <- as.numeric(unlist(x_new2))            #response
 
     set.seed(1)
-	fit.lasso <- glmnet(x, y, standardize=T)
+	fit.lasso <- glmnet(x, y, standardize=TRUE)
 	  
 	#--- select Lambda ------
 	train=sample(seq(dim(x)[1]),(dim(x)[1]/2),replace=FALSE)
@@ -749,9 +756,9 @@ datCM2 <- (df4[-dim(df4)[1],])
 agregatation <- as.data.frame(aggregate(name ~ feature, data = datCM2, toString))
 Names <- as.character(agregatation$feature)
 
-setDT(agregatation)[, id := .GRP, by = name]   						#Package 'data.table' - CRAN, it indexes the gene sets (add new column of indices)
+setDT(agregatation)[, id := .GRP, by = name]   						      #Package 'data.table' - CRAN, it indexes the gene sets (add new column of indices)
 agregatation <- agregatation[order(agregatation$id, decreasing=FALSE),]   #Sort based on the indices
-agregatation$id <- sprintf("Cluster_%d", agregatation$id)             #Add term of cluster at the beginning of each index
+agregatation$id <- sprintf("Cluster_%d", agregatation$id)                 #Add term of cluster at the beginning of each index
 agregatation <- as.data.frame(agregatation)
 length(agregatation$feature)
 
@@ -799,7 +806,7 @@ MA <- get.adjacency(G1,sparse=FALSE)
 
 MA[M1[,1:2]] <- as.numeric(M1[,3])  #weights
 
-crossTable <<- MA[1:length(unique(df6[,1])),-(1:length(unique(df6[,1])))]
+crossTable <- MA[1:length(unique(df6[,1])),-(1:length(unique(df6[,1])))]
 
 #-- Save data --
 return(CMP_subset)
