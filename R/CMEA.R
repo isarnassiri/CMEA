@@ -148,7 +148,7 @@ GRN <- function(number_of_features, support, confidence)
 
   for(i in 1:length(MCR))
   {
-    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUERUE), stringsAsFactors=FALSE)
+    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE)
     df2 <- rep(names(MCR[i]), dim(df)[2])
     df3 <-  rbind(df,df2)
     df4 <-  cbind(df3,df4)
@@ -414,7 +414,7 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
 
   for(i in 1:length(MCR))
   {
-    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUERUE), stringsAsFactors=FALSE)
+    df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE)
     df2 <- rep(names(MCR[i]), dim(df)[2])
     df3 <-  rbind(df,df2)
     df4 <-  cbind(df3,df4)
