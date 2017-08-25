@@ -73,7 +73,10 @@ GRN <- function(number_of_features, support, confidence)
 
   selected_drugs <- which(performance[,5] > 0.1)
   length(selected_drugs)
- 
+   
+  CMP_subset <- L1000_MP_profiles[selected_drugs,]
+  TP_subset <- L1000_TP_profiles[selected_drugs,]
+  
   #-- Data Normalization [unitization with zero minimum]
   for(l in 1:dim(CMP_subset)[2])
 	{
@@ -94,9 +97,6 @@ GRN <- function(number_of_features, support, confidence)
 	  for(t in 1:dim(TP_subset)[1])
 	  {  TP_subset[t,l] <- ((TP_subset[t,l]-min)/range) }
 	} 
-	
-  CMP_subset <<- L1000_MP_profiles[selected_drugs,]
-  TP_subset <<- L1000_TP_profiles[selected_drugs,]
 
   MCR <- list();
 
@@ -361,6 +361,9 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
   selected_drugs <- which(performance[,5] > 0.1)
   length(selected_drugs)
     
+  CMP_subset <- L1000_MP_profiles[selected_drugs,]
+  TP_subset <- L1000_TP_profiles[selected_drugs,]
+    
   #-- Data Normalization [unitization with zero minimum]
   for(l in 1:dim(CMP_subset)[2])
 	{
@@ -381,9 +384,6 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
 	  for(t in 1:dim(TP_subset)[1])
 	  {  TP_subset[t,l] <- ((TP_subset[t,l]-min)/range) }
 	} 
-	
-  CMP_subset <<- L1000_MP_profiles[selected_drugs,]
-  TP_subset <<- L1000_TP_profiles[selected_drugs,]
 
   MCR <- list();
 
@@ -543,9 +543,30 @@ Mapping <- function()
 
   selected_drugs <- which(performance[,5] > 0.1)
   length(selected_drugs)
+ 
+  CMP_subset <- L1000_MP_profiles[selected_drugs,]
+  TP_subset <- L1000_TP_profiles[selected_drugs,]
+  
+  #-- Data Normalization [unitization with zero minimum]
+  for(l in 1:dim(CMP_subset)[2])
+	{
+	  min <- min(CMP_subset[,l])
+	  max <- max(CMP_subset[,l])
+	  range <- max-min
+	  
+	  for(t in 1:dim(CMP_subset)[1])
+	  {  CMP_subset[t,l] <- ((CMP_subset[t,l]-min)/range) }
+	}
 
-  CMP_subset <<- L1000_MP_profiles[selected_drugs,]
-  TP_subset <<- L1000_TP_profiles[selected_drugs,]
+  for(l in 1:dim(TP_subset)[2])
+	{
+	  min <- min(TP_subset[,l])
+	  max <- max(TP_subset[,l])
+	  range <- max-min
+	  
+	  for(t in 1:dim(TP_subset)[1])
+	  {  TP_subset[t,l] <- ((TP_subset[t,l]-min)/range) }
+	} 
 
   #-- Save data --
   return(CMP_subset)
@@ -619,6 +640,9 @@ rownames(performance) <- rownames(repositoyr_binary)
 selected_drugs <- which(performance[,5] > 0.1)
 length(selected_drugs)
 
+CMP_subset <- L1000_MP_profiles[selected_drugs,]
+TP_subset <- L1000_TP_profiles[selected_drugs,]
+
 #-- Data Normalization [unitization with zero minimum]
   for(l in 1:dim(CMP_subset)[2])
 	{
@@ -639,9 +663,6 @@ length(selected_drugs)
 	  for(t in 1:dim(TP_subset)[1])
 	  {  TP_subset[t,l] <- ((TP_subset[t,l]-min)/range) }
 	} 
-
-CMP_subset <<- L1000_MP_profiles[selected_drugs,]
-TP_subset <<- L1000_TP_profiles[selected_drugs,]
 
 MCR <- list();
 
