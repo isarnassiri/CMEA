@@ -1,9 +1,9 @@
 #' @export
-#' @importFrom igraph
 #' @importFrom netbenchmark clr.wrap
 #' @importFrom data.table setDT
 #' @importFrom glmnet glmnet
 #' @importFrom reshape2 melt
+#' @import igraph
 #'
 #'@export
 #'@name GRN
@@ -554,7 +554,6 @@ Mapping <- function()
   print("You can find the results in the CMP_subset and TP_subset R objects.")
 
 }
-
 
 #'@export   
 #'@name crossTabulation
