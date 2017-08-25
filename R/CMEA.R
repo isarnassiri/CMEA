@@ -1,5 +1,4 @@
 #' @export
-#' @import ggplot2
 #' @importFrom clusterSim data.Normalization
 #' @importFrom netbenchmark clr.wrap
 #' @importFrom data.table setDT
@@ -627,11 +626,11 @@ for(i in 1:length(weights))
 
 df5$weight <- weights
 
-ggplot(df5, aes(x = Gene_name, y = Cell_morphological_phenotype, fill = weight)) +
-  geom_raster() +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 270, hjust = 0),
-        axis.text=element_text(size=8), axis.title=element_text(size=14, face="bold"))
+#ggplot(df5, aes(x = Gene_name, y = Cell_morphological_phenotype, fill = weight)) +
+#  geom_raster() +
+#  theme_bw() +
+#  theme(axis.text.x = element_text(angle = 270, hjust = 0),
+#        axis.text=element_text(size=8), axis.title=element_text(size=14, face="bold"))
 
 df6 <- data.frame()
 
