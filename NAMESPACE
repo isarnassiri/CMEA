@@ -3,7 +3,6 @@
 export(CellMorphologyEnrichmentAnalysis)
 export(GRN)
 export(Mapping)
-export(RankCellMorphologicalFeatures)
 export(crossTabulation)
 import(data.table)
 import(ggplot2)

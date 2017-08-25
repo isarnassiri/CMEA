@@ -72,21 +72,7 @@ The number of top cell morphological features, ranked based on the Strength Cent
 
 You can find the results in your current directory.
 
-## 5. Rank Cell Morphological Features
-
-We use the RankCellMorphologicalFeatures() function to consider the connectivity and centrality of features in Cosine similarity network of image-based cell morphological profile to rank cell morphological features. We present the first top N cell morphological features, ranked based on the Strength Centrality Score (SCS) in a questionnaire graph.
-   
-Example of application:
-   
-```{}
-RankCellMorphologicalFeatures(20) 
-
-Definition of parameters:
-The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20). This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
-```
-You can find the results in your current directory.
-
-## 6. Association rule mining of transcriptomic and cell morphological profiles
+## 5. Association rule mining of transcriptomic and cell morphological profiles
 
 We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. To infer a gene regulatory network for a cell morphological phenotype, first, we mine association rules between genes based on the cell morphological gene sets (Section 3). Next, we apply the Context Likelihood (CLR) network inference algorithm to identify the interactions between genes based on the transcriptomic profiles (Ts,978). CLR infers the interactions between genes by using a scoring function based on the empirical distribution of mutual information. We select interactions are shared between the association rules and CLR to represent a cell morphological phenotype gene regulatory network (GRN).
 
