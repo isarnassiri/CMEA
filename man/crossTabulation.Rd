@@ -10,6 +10,9 @@ crossTabulation(TOP)
 \item{TOP}{We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis.
 This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.}
 }
+\value{
+A contingency table of association between genes and cell morphological features
+}
 \description{
 We present the results of cell morphology enrichment analysis as cross-tabulation of landmark genes, and single-cell morphological features including the direction of effects (up or down regulation).
 }

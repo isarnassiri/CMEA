@@ -6,6 +6,9 @@
 \usage{
 Mapping()
 }
+\value{
+List of similar drugs and small compound molecules with a query
+}
 \description{
 {We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) to detect similarities among these profiles (s).
 First, we convert the query and backend repository of transcription profiles to the Boolean expression and replace up-regulated values with one and down regulated
@@ -21,5 +24,4 @@ Mapping()
 }
 \author{
 {Isar Nassiri, Matthew McCall}
-value{Mapping}(List of similar drugs and small compound molecules with a query)
 }

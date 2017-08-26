@@ -29,7 +29,7 @@
 #'@item{A Number}(support)
 #'@item{A Number}(confidence)
 #'}
-#'value{GRN}(List of gene-gene interactions)
+#'@return gene-gene interaction network
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
@@ -314,7 +314,7 @@ GRN <- function(number_of_features, support, confidence)
 #'The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
 #'@arguments item{A Number}(number_of_features)
-#'value{CellMorphologyEnrichmentAnalysis}(Repository of gene sets)
+#'@return Repository of gene sets
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
@@ -498,7 +498,7 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
 #'Next, we use the confusion matrices to score the similarity between the query and reference transcription profiles based on the Matthew correlation value.
 #'}
 #'@author {Isar Nassiri, Matthew McCall}
-#'value{Mapping}(List of similar drugs and small compound molecules with a query)
+#'@return List of similar drugs and small compound molecules with a query
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
@@ -598,7 +598,7 @@ Mapping <- function()
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
 #'}(TOP)
 #'}
-#'value{crossTabulation}(A contingency table of association between genes and cell morphological features)
+#'@return A contingency table of association between genes and cell morphological features
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)

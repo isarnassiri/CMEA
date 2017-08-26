@@ -17,6 +17,9 @@ the complete digraph of interactions between genes, we use minimum thresholds on
 the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Confidence shows how often a given association
 rule between two genes has been found in the dataset.}
 }
+\value{
+gene-gene interaction network
+}
 \description{
 We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes.
 }
