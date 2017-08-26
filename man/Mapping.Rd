@@ -21,5 +21,5 @@ Mapping()
 }
 \author{
 {Isar Nassiri, Matthew McCall}
-value{selected_drugs}(List of similar drugs and small compound molecules with a query)
+value{Mapping}(List of similar drugs and small compound molecules with a query)
 }
