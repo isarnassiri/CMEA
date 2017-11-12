@@ -19,16 +19,22 @@
 #'We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from
 #'the complete digraph of interactions between genes, we use minimum thresholds on lift and confidence measures. Confidence shows how often a given association
 #'rule between two genes has been found in the dataset.
+#'@param Transcriptomic_Profile
+#'A data frame including expression level of 978 land mark genes in response to treatment with 162 drugs/small compound molecules (row drug/small molecule compound ID, and column land mark gene symbols)
+#'@param Cell_Morphology_Profile
+#'A data frame including profiles of 812 cell morphological features of 162 drugs/small compound molecules (row drug/small molecule compound ID, and column cell morphological features)
+#'@param Query_Transcriptomic_Profile
+#'A data frame including expression level of 978 land mark genes in response to treatment with an indicated drugs/small compound molecule (row drug/small molecule compound ID, and column land mark gene symbols)
 #'@return 1. A matrix of gene-gene interaction network, including two columns.
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
 #'data(Query_Transcriptomic_Profile)
-#'geneInteractionNetwrok(10, 0.1, 0.6)
+#'geneInteractionNetwrok(10, 0.1, 0.6, Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
 #'@export
 
 geneInteractionNetwrok <- NULL
-geneInteractionNetwrok <- function(number_of_features, lift, confidence)
+geneInteractionNetwrok <- function(number_of_features, lift, confidence, Transcriptomic_Profile, Cell_Morphology_Profile, Query_Transcriptomic_Profile)
 {
   
   L1000_TP_profiles <- scale(Transcriptomic_Profile)
@@ -299,16 +305,22 @@ geneInteractionNetwrok <- function(number_of_features, lift, confidence)
 #'@param number_of_features
 #'The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
+#'@param Transcriptomic_Profile
+#'A data frame including expression level of 978 land mark genes in response to treatment with 162 drugs/small compound molecules (row drug/small molecule compound ID, and column land mark gene symbols)
+#'@param Cell_Morphology_Profile
+#'A data frame including profiles of 812 cell morphological features of 162 drugs/small compound molecules (row drug/small molecule compound ID, and column cell morphological features)
+#'@param Query_Transcriptomic_Profile
+#'A data frame including expression level of 978 land mark genes in response to treatment with an indicated drugs/small compound molecule (row drug/small molecule compound ID, and column land mark gene symbols)
 #'@return 1. A data frame including 812 cell morphological features (row) and associated land mark genes with each feature (column); 2. A data frame including profiles of cell morphological features of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column cell morphological features); 3. A data frame including gene expression profiles of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column gene symbol).
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
 #'data(Query_Transcriptomic_Profile)
-#'cellMorphologyEnrichmentAnalysis(20)
+#'cellMorphologyEnrichmentAnalysis(20, Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
 #'@export
 
 cellMorphologyEnrichmentAnalysis <- NULL
-cellMorphologyEnrichmentAnalysis <- function(number_of_features)
+cellMorphologyEnrichmentAnalysis <- function(number_of_features, Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
 {
 
   L1000_TP_profiles <- Transcriptomic_Profile
@@ -579,16 +591,22 @@ mappingQueryTranscriptomic <- function(Query_Transcriptomic_Profile, Transcripto
 #'@param TOP
 #'We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis.
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
+#'@param Transcriptomic_Profile
+#'A data frame including expression level of 978 land mark genes in response to treatment with 162 drugs/small compound molecules (row drug/small molecule compound ID, and column land mark gene symbols)
+#'@param Cell_Morphology_Profile
+#'A data frame including profiles of 812 cell morphological features of 162 drugs/small compound molecules (row drug/small molecule compound ID, and column cell morphological features)
+#'@param Query_Transcriptomic_Profile
+#'A data frame including expression level of 978 land mark genes in response to treatment with an indicated drugs/small compound molecule (row drug/small molecule compound ID, and column land mark gene symbols)
 #'@return 1. A crosstab matrix including 812 cell morphological features (row), associated land mark genes with each feature (column), and gene expression level vaules as its elements; 2. A data frame including profiles of cell morphological features of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column cell morphological features); 3. A data frame including gene expression profiles of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column gene symbol).
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
 #'data(Query_Transcriptomic_Profile)
-#'crossTabulation(20) 
+#'crossTabulation(20, Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile) 
 #'@export 
 
 crossTabulation <- NULL
-crossTabulation <- function(TOP)
+crossTabulation <- function(TOP, Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
 {
 L1000_TP_profiles <- Transcriptomic_Profile
 L1000_MP_profiles <- Cell_Morphology_Profile

@@ -4,11 +4,18 @@
 \alias{crossTabulation}
 \title{{Cross-tabulation of landmark genes, and single-cell morphological features}}
 \usage{
-crossTabulation(TOP)
+crossTabulation(TOP, Query_Transcriptomic_Profile, Transcriptomic_Profile,
+  Cell_Morphology_Profile)
 }
 \arguments{
 \item{TOP}{We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis.
 This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.}
+
+\item{Query_Transcriptomic_Profile}{A data frame including expression level of 978 land mark genes in response to treatment with an indicated drugs/small compound molecule (row drug/small molecule compound ID, and column land mark gene symbols)}
+
+\item{Transcriptomic_Profile}{A data frame including expression level of 978 land mark genes in response to treatment with 162 drugs/small compound molecules (row drug/small molecule compound ID, and column land mark gene symbols)}
+
+\item{Cell_Morphology_Profile}{A data frame including profiles of 812 cell morphological features of 162 drugs/small compound molecules (row drug/small molecule compound ID, and column cell morphological features)}
 }
 \value{
 1. A crosstab matrix including 812 cell morphological features (row), associated land mark genes with each feature (column), and gene expression level vaules as its elements; 2. A data frame including profiles of cell morphological features of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column cell morphological features); 3. A data frame including gene expression profiles of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column gene symbol).
@@ -20,7 +27,7 @@ We present the results of cell morphology enrichment analysis as cross-tabulatio
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
 data(Query_Transcriptomic_Profile)
-crossTabulation(20) 
+crossTabulation(20, Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile) 
 }
 \author{
 {Isar Nassiri, Matthew McCall}

@@ -4,11 +4,18 @@
 \alias{cellMorphologyEnrichmentAnalysis}
 \title{cell morphology enrichment analysis}
 \usage{
-cellMorphologyEnrichmentAnalysis(number_of_features)
+cellMorphologyEnrichmentAnalysis(number_of_features,
+  Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
 }
 \arguments{
 \item{number_of_features}{The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.}
+
+\item{Query_Transcriptomic_Profile}{A data frame including expression level of 978 land mark genes in response to treatment with an indicated drugs/small compound molecule (row drug/small molecule compound ID, and column land mark gene symbols)}
+
+\item{Transcriptomic_Profile}{A data frame including expression level of 978 land mark genes in response to treatment with 162 drugs/small compound molecules (row drug/small molecule compound ID, and column land mark gene symbols)}
+
+\item{Cell_Morphology_Profile}{A data frame including profiles of 812 cell morphological features of 162 drugs/small compound molecules (row drug/small molecule compound ID, and column cell morphological features)}
 }
 \value{
 1. A data frame including 812 cell morphological features (row) and associated land mark genes with each feature (column); 2. A data frame including profiles of cell morphological features of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column cell morphological features); 3. A data frame including gene expression profiles of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column gene symbol).
@@ -20,7 +27,7 @@ We use a stepwise variable selection approach, including combination of least ab
 data(Transcriptomic_Profile)
 data(Cell_Morphology_Profile)
 data(Query_Transcriptomic_Profile)
-cellMorphologyEnrichmentAnalysis(20)
+cellMorphologyEnrichmentAnalysis(20, Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
 }
 \author{
 {Isar Nassiri, Matthew McCall}
