@@ -4,21 +4,21 @@
 \alias{geneInteractionNetwrok}
 \title{Gene regulatory network of cell morphological phenotypes}
 \usage{
-geneInteractionNetwrok(number_of_features, support, confidence)
+geneInteractionNetwrok(number_of_features, lift, confidence)
 }
 \arguments{
 \item{number_of_features}{The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.}
 
-\item{support}{We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from
-the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Support measures the frequency of an indicated gene in the cell morphological gene sets.}
+\item{lift}{We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from
+the complete digraph of interactions between genes, we use minimum thresholds on lift and confidence measures. Lift measures the frequency of an indicated gene in the cell morphological gene sets.}
 
 \item{confidence}{We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from
-the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Confidence shows how often a given association
+the complete digraph of interactions between genes, we use minimum thresholds on lift and confidence measures. Confidence shows how often a given association
 rule between two genes has been found in the dataset.}
 }
 \value{
-1. A matrix of gene-gene interaction network, including three columns: source gene, sink gene, and type of interaction (+ activation, - inhibition); 2. A data frame including profiles of cell morphological features of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column cell morphological features); 3. A data frame including gene expression profiles of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column gene symbol).
+1. A matrix of gene-gene interaction network, including two columns.
 }
 \description{
 We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes.
