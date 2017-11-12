@@ -6,11 +6,7 @@
 #' @import igraph
 #'
 #'@export
-#'@name GRN
-#'@alias GRN
-#'@alias number_of_features
-#'@alias support
-#'@alias confidence
+#'@name geneInteractionNetwrok
 #'@title Gene regulatory network of cell morphological phenotypes
 #'@description We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes. 
 #'@author {Isar Nassiri, Matthew McCall}
@@ -24,20 +20,16 @@
 #'We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from
 #'the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Confidence shows how often a given association
 #'rule between two genes has been found in the dataset.
-#'@arguments {
-#'@item{A Number}(number_of_features)
-#'@item{A Number}(support)
-#'@item{A Number}(confidence)
-#'}
-#'@return gene-gene interaction network
+#'@return 1. A matrix of gene-gene interaction network, including three columns: source gene, sink gene, and type of interaction (+ activation, - inhibition); 2. A data frame including profiles of cell morphological features of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column cell morphological features); 3. A data frame including gene expression profiles of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column gene symbol).
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
 #'data(Query_Transcriptomic_Profile)
-#'GRN(10, 0.1, 0.6)
+#'geneInteractionNetwrok(10, 0.1, 0.6)
 #'@export
 
-GRN <- function(number_of_features, support, confidence)
+geneInteractionNetwrok <- NULL
+geneInteractionNetwrok <- function(number_of_features, support, confidence)
 {
   L1000_TP_profiles <- scale(Transcriptomic_Profile)
   L1000_MP_profiles <- scale(Cell_Morphology_Profile)
@@ -305,26 +297,23 @@ GRN <- function(number_of_features, support, confidence)
 }
 
 #'@export
-#'@name CellMorphologyEnrichmentAnalysis
-#'@alias CellMorphologyEnrichmentAnalysis
-#'@alias number_of_features
-#'@title Cell morphology enrichment analysis
+#'@name cellMorphologyEnrichmentAnalysis
+#'@title cell morphology enrichment analysis
 #'@description We use a stepwise variable selection approach, including combination of least absolute shrinkage and selection operator (LASSO) with cross-validation to tune parameter for cell morphology enrichment analysis. We consider all transcriptomic profiles in the reference repository as inputs of LASSO to select a subset of landmark genes (v) that best describe an indicated profile of cell morphology feature.
 #'@author {Isar Nassiri, Matthew McCall}
 #'@param number_of_features
 #'The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
-#'@arguments item{A Number}(number_of_features)
-#'@return Repository of gene sets
+#'@return 1. A data frame including 812 cell morphological features (row) and associated land mark genes with each feature (column); 2. A data frame including profiles of cell morphological features of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column cell morphological features); 3. A data frame including gene expression profiles of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column gene symbol).
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
 #'data(Query_Transcriptomic_Profile)
-#'CellMorphologyEnrichmentAnalysis(20)
+#'cellMorphologyEnrichmentAnalysis(20)
 #'@export
 
-CellMorphologyEnrichmentAnalysis <- NULL
-CellMorphologyEnrichmentAnalysis <- function(number_of_features)
+cellMorphologyEnrichmentAnalysis <- NULL
+cellMorphologyEnrichmentAnalysis <- function(number_of_features)
 {
 
   L1000_TP_profiles <- Transcriptomic_Profile
@@ -490,8 +479,7 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
 
  }
   
-#'@name Mapping
-#'@alias Mapping
+#'@name mappingQueryTranscriptomic
 #'@title Mapping query transcriptomic profile against the reference repository
 #'@description {We map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) to detect similarities among these profiles (s).
 #'First, we convert the query and backend repository of transcription profiles to the Boolean expression and replace up-regulated values with one and down regulated
@@ -499,16 +487,22 @@ CellMorphologyEnrichmentAnalysis <- function(number_of_features)
 #'Next, we use the confusion matrices to score the similarity between the query and reference transcription profiles based on the Matthew correlation value.
 #'}
 #'@author {Isar Nassiri, Matthew McCall}
-#'@return List of similar drugs and small compound molecules with a query
+#'@param Transcriptomic_Profile
+#'A data frame including expression level of 978 land mark genes in response to treatment with 162 drugs/small compound molecules (row drug/small molecule compound ID, and column land mark gene symbols)
+#'@param Cell_Morphology_Profile
+#'A data frame including profiles of 812 cell morphological features of 162 drugs/small compound molecules (row drug/small molecule compound ID, and column cell morphological features)
+#'@param Query_Transcriptomic_Profile
+#'A data frame including expression level of 978 land mark genes in response to treatment with an indicated drugs/small compound molecule (row drug/small molecule compound ID, and column land mark gene symbols)
+#'@return 1. A data frame including profiles of cell morphological features of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column cell morphological features); 3. A data frame including gene expression profiles of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column gene symbol).
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
 #'data(Query_Transcriptomic_Profile)
-#'Mapping()
+#'mappingQueryTranscriptomic(Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
 #'@export
 
-Mapping <- NULL
-Mapping <- function()
+mappingQueryTranscriptomic <- NULL
+mappingQueryTranscriptomic <- function(Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
 {
 
   L1000_TP_profiles <- Transcriptomic_Profile
@@ -579,34 +573,26 @@ Mapping <- function()
   return(TP_subset)
   return(selected_drugs)
 
-  print("You can find the results in the CMP_subset and TP_subset R objects.")
-
+  print("You can find the results in R object under title of CMP_subset and TP_subset.")
 }
 
 #'@export   
 #'@name crossTabulation
-#'@alias crossTabulation
-#'@alias TOP
 #'@title {Cross-tabulation of landmark genes, and single-cell morphological features}
 #'@description We present the results of cell morphology enrichment analysis as cross-tabulation of landmark genes, and single-cell morphological features including the direction of effects (up or down regulation).
 #'@author {Isar Nassiri, Matthew McCall}
 #'@param TOP
 #'We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis.
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
-#'@arguments {
-#'@item{A Number}{
-#'We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis.
-#'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
-#'}(TOP)
-#'}
-#'@return A contingency table of association between genes and cell morphological features
+#'@return 1. A crosstab matrix including 812 cell morphological features (row), associated land mark genes with each feature (column), and gene expression level vaules as its elements; 2. A data frame including profiles of cell morphological features of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column cell morphological features); 3. A data frame including gene expression profiles of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column gene symbol).
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
 #'data(Query_Transcriptomic_Profile)
 #'crossTabulation(20) 
 #'@export 
- 
+
+crossTabulation <- NULL
 crossTabulation <- function(TOP)
 {
 L1000_TP_profiles <- Transcriptomic_Profile
