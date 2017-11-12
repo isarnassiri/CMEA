@@ -25,7 +25,7 @@ rule between two genes has been found in the dataset.}
 \item{Cell_Morphology_Profile}{A data frame including profiles of 812 cell morphological features of 162 drugs/small compound molecules (row drug/small molecule compound ID, and column cell morphological features)}
 }
 \value{
-1. A matrix of gene-gene interaction network, including two columns.
+1. A matrix of gene-gene interaction network, including two columns under title of Source and Target. Source molecule in network interaction with Target molecule based on biological rationale.
 }
 \description{
 We use the mining association model to detect the associations between the landmark genes, and inference of gene regulatory network of cell morphological phenotypes.

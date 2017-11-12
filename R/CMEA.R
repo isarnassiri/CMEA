@@ -25,7 +25,7 @@
 #'A data frame including profiles of 812 cell morphological features of 162 drugs/small compound molecules (row drug/small molecule compound ID, and column cell morphological features)
 #'@param Query_Transcriptomic_Profile
 #'A data frame including expression level of 978 land mark genes in response to treatment with an indicated drugs/small compound molecule (row drug/small molecule compound ID, and column land mark gene symbols)
-#'@return 1. A matrix of gene-gene interaction network, including two columns.
+#'@return 1. A matrix of gene-gene interaction network, including two columns under title of Source and Target. Source molecule in network interaction with Target molecule based on biological rationale.
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
@@ -289,13 +289,13 @@ geneInteractionNetwrok <- function(number_of_features, lift, confidence, Query_T
   }
   
   matrix_of_interactions <- as.matrix(graph_e)
-  colnames(matrix_of_interactions) <- c("geneSymbol", "geneSymbol2")
-  matrix_of_interactions <- matrix_of_interactions[!duplicated(matrix_of_interactions),]
+  colnames(matrix_of_interactions) <- c("Source", "Target")
+  matrixOfInteractions <- matrix_of_interactions[!duplicated(matrix_of_interactions),]
   
   # -- Save data --
-  return(selectedEdges)
+  return(matrixOfInteractions)
   
-  print("You can find the results in the 'selectedEdges' R object.")
+  print("You can find the results in the 'matrixOfInteractions' R object.")
 
 }
 
