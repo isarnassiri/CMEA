@@ -88,6 +88,9 @@ Definition of parameters:
 You can find the results in your current directory.
 
 ## References:
+
 1. Lamb, J., Crawford, E.D., Peck, D., Modell, J.W., Blat, I.C., Wrobel, M.J., Lerner, J., Brunet, J.P., Subramanian, A., Ross, K.N. et al. (2006) The connectivity map: Using gene-expression signatures to connect small molecules, genes, and disease. Science, 313, 1929-1935.
+
 2. Wawer, M.J., Jaramillo, D.E., Dancik, V., Fass, D.M., Haggarty, S.J., Shamji, A.F., Wagner, B.K., Schreiber, S.L. and Clemons, P.A. (2014) Automated Structure-Activity Relationship Mining: Connecting Chemical Structure to Biological Profiles. Journal of Biomolecular Screening, 19,738-748.
+
 3. Wang, Z., Clark, N.R. and Ma'ayan, A. (2016) Drug-induced adverse events prediction with the LINCS L1000 data. Bioinformatics, 32, 2338-2345.
