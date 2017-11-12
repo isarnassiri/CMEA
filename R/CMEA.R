@@ -1,8 +1,7 @@
 #' @export
-#' @importFrom data.table setDT
+#' @import data.table
 #' @importFrom netbenchmark clr.wrap
 #' @importFrom glmnet glmnet
-#' @importFrom reshape2 melt
 #' @import igraph
 #'
 #'@export
