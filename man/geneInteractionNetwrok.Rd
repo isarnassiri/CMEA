@@ -5,7 +5,7 @@
 \title{Gene regulatory network of cell morphological phenotypes}
 \usage{
 geneInteractionNetwrok(number_of_features, lift, confidence,
-  Transcriptomic_Profile, Cell_Morphology_Profile, Query_Transcriptomic_Profile)
+  Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
 }
 \arguments{
 \item{number_of_features}{The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
@@ -18,11 +18,11 @@ the complete digraph of interactions between genes, we use minimum thresholds on
 the complete digraph of interactions between genes, we use minimum thresholds on lift and confidence measures. Confidence shows how often a given association
 rule between two genes has been found in the dataset.}
 
+\item{Query_Transcriptomic_Profile}{A data frame including expression level of 978 land mark genes in response to treatment with an indicated drugs/small compound molecule (row drug/small molecule compound ID, and column land mark gene symbols)}
+
 \item{Transcriptomic_Profile}{A data frame including expression level of 978 land mark genes in response to treatment with 162 drugs/small compound molecules (row drug/small molecule compound ID, and column land mark gene symbols)}
 
 \item{Cell_Morphology_Profile}{A data frame including profiles of 812 cell morphological features of 162 drugs/small compound molecules (row drug/small molecule compound ID, and column cell morphological features)}
-
-\item{Query_Transcriptomic_Profile}{A data frame including expression level of 978 land mark genes in response to treatment with an indicated drugs/small compound molecule (row drug/small molecule compound ID, and column land mark gene symbols)}
 }
 \value{
 1. A matrix of gene-gene interaction network, including two columns.

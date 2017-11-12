@@ -34,13 +34,15 @@
 #'@export
 
 geneInteractionNetwrok <- NULL
-geneInteractionNetwrok <- function(number_of_features, lift, confidence, Transcriptomic_Profile, Cell_Morphology_Profile, Query_Transcriptomic_Profile)
+geneInteractionNetwrok <- function(number_of_features, lift, confidence, Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
 {
   
-  L1000_TP_profiles <- scale(Transcriptomic_Profile)
-  L1000_MP_profiles <- scale(Cell_Morphology_Profile)
-
+  L1000_TP_profiles <- Transcriptomic_Profile
+  L1000_MP_profiles <- Cell_Morphology_Profile
   x_new <- Query_Transcriptomic_Profile
+  
+  L1000_TP_profiles <- scale(L1000_TP_profiles)
+  L1000_MP_profiles <- scale(L1000_MP_profiles)
 
   query_binary <- ifelse(x_new > 0, 1, 0)
   repositoyr_binary <- ifelse(L1000_TP_profiles > 0, 1, 0)

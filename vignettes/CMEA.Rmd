@@ -39,6 +39,9 @@ We use the Mapping() function to map the query profile (Q) of fold change of gen
 Example of application: identification of similar drugs with the transcription profile of "BRD-K37798499":
 ```{r,}
 library(CMEA)
+data(Transcriptomic_Profile)
+data(Cell_Morphology_Profile)
+data(Query_Transcriptomic_Profile)
 Selectedprofiles <- mappingQueryTranscriptomic(Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
 knitr::kable(head(Selectedprofiles[,1:3]))
 ```
@@ -54,7 +57,10 @@ landmark genes, and single-cell morphological features including the direction o
 Example of application:
 ```{r,}
 library(CMEA)
-cellMorphologyEnrichmentAnalysis <- cellMorphologyEnrichmentAnalysis(20)    
+data(Transcriptomic_Profile)
+data(Cell_Morphology_Profile)
+data(Query_Transcriptomic_Profile)
+cellMorphologyEnrichmentAnalysis <- cellMorphologyEnrichmentAnalysis(20, Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)    
 knitr::kable(head(cellMorphologyEnrichmentAnalysis[,1:3]))
 ```
 
@@ -70,7 +76,7 @@ We use an association mining model to detect the associations between the genes 
 Example of application:
 ```{r,}
 library(CMEA)
-geneInteractionNetwrok <- geneInteractionNetwrok(10, 0.1, 0.6) 
+geneInteractionNetwrok <- geneInteractionNetwrok(10, 0.1, 0.6, Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile) 
 knitr::kable(head(geneInteractionNetwrok))
 ```
 
