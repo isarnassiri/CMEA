@@ -18,28 +18,16 @@ Single-cell morphological phenotypes, including shape, size, intensity, and text
 We demonstrate the application of the CMEA package by using the transcriptomic and single cell morphological profiles of human bone osteosarcoma cells (U-2 OS cells) in response to the 9515 drugs or small molecule compounds (1). The raw data include the transcripotimic profiles of 20340 drugs and small compound molecules, and single cell morpohological profiles of 19864 drugs and small compound molecules. These data sets were published in 2014  and are available as supplementary files of (2). We used a processed version of this data, which is available as supplementary of (3). The intersection of transcriptomic and single-cell morphological profiles includes 9515 drugs and small compound molecules, and use as a backend repository of CMEA package. 
 The transcriptomic profile in backend repository is 9515*978 matric, including the fold change of the 978 landmark gene expression in response to the treatment of U-2 OS cells with 9515 drugs and small compound molecules. 
 
-```{}
-head(Transcriptomic_Profile)[1:5]
-                   PSME1       ATF1        RHEB      FOXO3        RHOA
-BRD-A06352508 -1.0118604  2.0126676  0.24396738 -0.7628808 -0.50666198
-BRD-A09925278  2.2572466  0.2357585 -0.87237056  0.4297276 -0.87052867
-BRD-A11678676  0.4488044  0.3092559 -0.36787168  1.8814198  0.42195614
-BRD-A17065207 -0.6854848  0.1017337 -0.54498299  0.4173902 -1.32915231
-BRD-A18763547 -1.3863898 -0.3133108 -0.04048412  2.3872502 -0.07457028
-BRD-A26384407  3.0705105  0.7718576 -0.15855832 -0.1994762 -0.12763418
+```{r,}
+library(CMEA)
+knitr::kable(head(Transcriptomic_Profile)[1:7])
 ```
 
 The single-cell morphological profile in backend repository is 9515*812 matric, including the fold change of 812 cell morphological features in response to the treatment of U-2 OS cells with 9515 drugs and small compund molecules.
 
-```{}
-head(Cell_Morphology_Profile)[1:3]
-              Cells_AreaShape_Area Cells_AreaShape_Compactness Cells_AreaShape_Eccentricity
-BRD-A06352508           0.07349663                   5.3698176                    4.8470624
-BRD-A09925278          -0.09968748                  -0.3722763                   -1.0475846
-BRD-A11678676           0.69289901                   0.3576256                    1.3708629
-BRD-A17065207          -3.53088126                   1.7724848                    1.5016300
-BRD-A18763547          -0.09247960                   0.2351752                   -0.1964067
-BRD-A26384407          -0.24611441                   0.3526544                    0.1375016
+```{r,}
+library(CMEA)
+knitr::kable(head(Cell_Morphology_Profile)[1:3])
 ```
 
 The complete data set, including raw and processed data, is available at (https://isarnassiri@bitbucket.org/isarnassiri/cmeadata).
@@ -49,26 +37,29 @@ The complete data set, including raw and processed data, is available at (https:
 We use the Mapping() function to map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) and detect similar profiles (s). 
 
 Example of application: identification of similar drugs with the transcription profile of "BRD-K37798499":
-```{}
-Mapping()
+```{r,}
+library(CMEA)
+Selectedprofiles <- mappingQueryTranscriptomic(Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
+knitr::kable(head(Selectedprofiles[,1:3]))
 ```
 
 You can find the results in your current directory.
 
 ## 4. Cell morphology enrichment analysis
 
-For cell morphology enrichment analysis, we use the CellMorphologyEnrichmentAnalysis() function for variable selection and fit a sparse model based on the strong 
+For cell morphology enrichment analysis, we use the cellMorphologyEnrichmentAnalysis() function for variable selection and fit a sparse model based on the strong 
 correlation between the transcription and single-cell morphological profiles. We present the results of the cell morphology enrichment analysis as cross-tabulation of 
 landmark genes, and single-cell morphological features including the direction of effects (up or down regulation). 
 
 Example of application:
-```{}
-CellMorphologyEnrichmentAnalysis(20)    
-crossTabulation(20)    
+```{r,}
+library(CMEA)
+cellMorphologyEnrichmentAnalysis <- cellMorphologyEnrichmentAnalysis(20)    
+knitr::kable(head(cellMorphologyEnrichmentAnalysis[,1:3]))
+```
 
 Definition of parameters:
 The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20). This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
-```
 
 You can find the results in your current directory.
 
@@ -77,14 +68,17 @@ You can find the results in your current directory.
 We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. To infer a gene regulatory network for a cell morphological phenotype, first, we mine association rules between genes based on the cell morphological gene sets (Section 3). Next, we apply the Context Likelihood (CLR) network inference algorithm to identify the interactions between genes based on the transcriptomic profiles (Ts,978). CLR infers the interactions between genes by using a scoring function based on the empirical distribution of mutual information. We select interactions are shared between the association rules and CLR to represent a cell morphological phenotype gene regulatory network (GRN).
 
 Example of application:
-```{}
-GRN(10, 0.1, 0.6) 
+```{r,}
+library(CMEA)
+geneInteractionNetwrok <- geneInteractionNetwrok(10, 0.1, 0.6) 
+knitr::kable(head(geneInteractionNetwrok))
+```
 
 Definition of parameters:
-#The number of first top cell morphological features (e.g. 10): We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis. This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
-#Support parameter (e.g. 0.1): We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Support measures the frequency of an indicated gene in the cell morphological gene sets. 
-#Confidence parameter (e.g. 0.6): We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Confidence shows how often a given association rule between two genes has been found in the dataset.
-```
+-The number of first top cell morphological features (e.g. 10): We use the top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis. This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
+-Support parameter (e.g. 0.1): We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Support measures the frequency of an indicated gene in the cell morphological gene sets. 
+-Confidence parameter (e.g. 0.6): We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Confidence shows how often a given association rule between two genes has been found in the dataset.
+
 You can find the results in your current directory.
 
 ## References:

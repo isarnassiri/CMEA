@@ -12,14 +12,14 @@
 #'@param number_of_features 
 #'The number of top cell morphological features, ranked based on the Strength Centrality Score (SCS) for enrichment analysis (e.g. 20).
 #'This parameter specifies the number of first top cell morphological features which are used for enrichment sets of landmark genes.
-#'@param support
+#'@param lift
 #'We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from
-#'the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Support measures the frequency of an indicated gene in the cell morphological gene sets.
+#'the complete digraph of interactions between genes, we use minimum thresholds on lift and confidence measures. Lift measures the frequency of an indicated gene in the cell morphological gene sets.
 #'@param confidence 
 #'We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. In order to select significant interactions between any two genes from
-#'the complete digraph of interactions between genes, we use minimum thresholds on support and confidence measures. Confidence shows how often a given association
+#'the complete digraph of interactions between genes, we use minimum thresholds on lift and confidence measures. Confidence shows how often a given association
 #'rule between two genes has been found in the dataset.
-#'@return 1. A matrix of gene-gene interaction network, including three columns: source gene, sink gene, and type of interaction (+ activation, - inhibition); 2. A data frame including profiles of cell morphological features of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column cell morphological features); 3. A data frame including gene expression profiles of similar drugs/small compound molecules with query (row drug/small molecule compound ID, and column gene symbol).
+#'@return 1. A matrix of gene-gene interaction network, including two columns.
 #'@examples
 #'data(Transcriptomic_Profile)
 #'data(Cell_Morphology_Profile)
@@ -28,8 +28,9 @@
 #'@export
 
 geneInteractionNetwrok <- NULL
-geneInteractionNetwrok <- function(number_of_features, support, confidence)
+geneInteractionNetwrok <- function(number_of_features, lift, confidence)
 {
+  
   L1000_TP_profiles <- scale(Transcriptomic_Profile)
   L1000_MP_profiles <- scale(Cell_Morphology_Profile)
 
@@ -95,13 +96,13 @@ geneInteractionNetwrok <- function(number_of_features, support, confidence)
 
   for(i in 1:number_of_features)
   {
-    x_new2 <- as.data.frame(CMP_subset[,i])
-    colnames(x_new2) <- colnames(CMP_subset)[i]
+  x_new2 <- as.data.frame(CMP_subset[,i])
+  colnames(x_new2) <- colnames(CMP_subset)[i]
 
-    x <- data.matrix(TP_subset)                #predictors
-    y <- as.numeric(unlist(x_new2))            #response
+  x <- data.matrix(TP_subset)                #predictors
+  y <- as.numeric(unlist(x_new2))            #response
 
-    set.seed(1)
+  set.seed(1)
 	fit.lasso <- glmnet(x, y, standardize=TRUE)
 
 	#--- select Lambda ------
@@ -251,11 +252,8 @@ geneInteractionNetwrok <- function(number_of_features, support, confidence)
   
   colnames(combination_all_genes_in_MCR) <- c("gene1","gene2","supp(XvY)","Confidence", "lift")
   dim(combination_all_genes_in_MCR)
-  
-  # combination_all_genes_in_MCR_sig <- combination_all_genes_in_MCR[combination_all_genes_in_MCR$Confidence > 0.6,]
-  # combination_all_genes_in_MCR_sig <- combination_all_genes_in_MCR_sig[combination_all_genes_in_MCR_sig$`supp(XvY)` > 0.1]
-  # 
-  combination_all_genes_in_MCR_sig <- combination_all_genes_in_MCR[combination_all_genes_in_MCR$lift > 4,]
+
+  combination_all_genes_in_MCR_sig <- combination_all_genes_in_MCR[combination_all_genes_in_MCR$lift > lift,]
   
   edgelist2 <- paste(combination_all_genes_in_MCR_sig[,1], combination_all_genes_in_MCR_sig[,2], sep = "~")
   length(edgelist2)
@@ -269,15 +267,15 @@ geneInteractionNetwrok <- function(number_of_features, support, confidence)
 
   #-- comparison of rules and correlation
 
-  selected_edges <- edgelist1[which(edgelist1 %in% edgelist2)]
-  length(selected_edges)
+  selectedEdges <- edgelist1[which(edgelist1 %in% edgelist2)]
+  length(selectedEdges)
 
   #Visulization of graph
   graph_e <- data.frame()
   
-  for (i in 1:length(selected_edges))
+  for (i in 1:length(selectedEdges))
   {
-    e_ <- unlist(strsplit(selected_edges[i], "~"))
+    e_ <- unlist(strsplit(selectedEdges[i], "~"))
     graph_e[i,1] <- e_[1]
     graph_e[i,2] <- e_[2]
   }
@@ -287,11 +285,9 @@ geneInteractionNetwrok <- function(number_of_features, support, confidence)
   matrix_of_interactions <- matrix_of_interactions[!duplicated(matrix_of_interactions),]
   
   # -- Save data --
-  return(CMP_subset)
-  return(TP_subset)
-  return(selected_edges)
+  return(selectedEdges)
   
-  print("You can find the results in the 'GeneRegulatoryNetwork' R object.")
+  print("You can find the results in the 'selectedEdges' R object.")
 
 }
 
@@ -466,15 +462,15 @@ cellMorphologyEnrichmentAnalysis <- function(number_of_features)
   setDT(agregatation)[, id := .GRP, by = name]
   agregatation <- agregatation[order(agregatation$id, decreasing=FALSE),]
   agregatation$id <- sprintf("Cluster_%d", agregatation$id)
-  CellMorphologyEnrichment <- as.data.frame(agregatation)
-  length(CellMorphologyEnrichment$feature)
+  cellMorphologyEnrichment <- as.data.frame(agregatation)
+  length(cellMorphologyEnrichment$feature)
   
   #-- Save data --
   return(CMP_subset)
   return(TP_subset)
-  return(CellMorphologyEnrichment)
+  return(cellMorphologyEnrichment)
 
-  print("You can find the results in the 'CellMorphologyEnrichment' R objects.")
+  print("You can find the results in the 'cellMorphologyEnrichment' R objects.")
 
  }
   
