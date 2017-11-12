@@ -1,5 +1,5 @@
 #' @export
-#' @import data.table setDT
+#' @importFrom data.table setDT
 #' @importFrom netbenchmark clr.wrap
 #' @importFrom glmnet glmnet
 #' @importFrom reshape2 melt
