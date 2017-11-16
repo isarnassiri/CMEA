@@ -74,10 +74,8 @@ You can find the results in your current directory.
 We use an association mining model to detect the associations between the genes and to infer a gene regulatory network from phenotypic experimental data. To infer a gene regulatory network for a cell morphological phenotype, first, we mine association rules between genes based on the cell morphological gene sets (Section 3). Next, we apply the Context Likelihood (CLR) network inference algorithm to identify the interactions between genes based on the transcriptomic profiles (Ts,978). CLR infers the interactions between genes by using a scoring function based on the empirical distribution of mutual information. We select interactions are shared between the association rules and CLR to represent a cell morphological phenotype gene regulatory network (GRN).
 
 Example of application:
-```{r,}
-library(CMEA)
+```{,}
 geneInteractionNetwrok <- geneInteractionNetwrok(10, 0.1, 0.6, Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile) 
-knitr::kable(head(geneInteractionNetwrok))
 ```
 
 Definition of parameters:
