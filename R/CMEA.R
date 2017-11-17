@@ -73,7 +73,7 @@ geneInteractionNetwrok <- function(number_of_features, lift, confidence, Query_T
   colnames(performance) <- c("TP", "TN", "FP", "FN", "MCC")
   rownames(performance) <- rownames(repositoyr_binary)
 
-  selected_drugs <<- which(performance[,5] > 0.1)
+  selected_drugs <- which(performance[,5] > 0.1)
   length(selected_drugs)
    
   CMP_subset <<- L1000_MP_profiles[selected_drugs,]
@@ -513,7 +513,7 @@ cellMorphologyEnrichmentAnalysis <- function(number_of_features, Query_Transcrip
 mappingQueryTranscriptomic <- NULL
 mappingQueryTranscriptomic <- function(Query_Transcriptomic_Profile, Transcriptomic_Profile, Cell_Morphology_Profile)
 {
-
+  
   L1000_TP_profiles <- Transcriptomic_Profile
   L1000_MP_profiles <- Cell_Morphology_Profile
   x_new <- Query_Transcriptomic_Profile
@@ -550,11 +550,13 @@ mappingQueryTranscriptomic <- function(Query_Transcriptomic_Profile, Transcripto
   colnames(performance) <- c("TP", "TN", "FP", "FN", "MCC")
   rownames(performance) <- rownames(repositoyr_binary)
 
-  selected_drugs <<- which(performance[,5] > 0.1)
+  selected_drugs <- which(performance[,5] > 0.1)
   length(selected_drugs)
  
   CMP_subset <<- L1000_MP_profiles[selected_drugs,]
   TP_subset <<- L1000_TP_profiles[selected_drugs,]
+  
+  selectedDrugs <<- rownames(CMP_subset)
   
   #-- Data Normalization [unitization with zero minimum]
   for(l in 1:dim(CMP_subset)[2])
@@ -577,10 +579,12 @@ mappingQueryTranscriptomic <- function(Query_Transcriptomic_Profile, Transcripto
 	  {  TP_subset[t,l] <- ((TP_subset[t,l]-min)/range) }
 	} 
 
+  selectedDrugs <<- rownames(CMP_subset)
+  
   #-- Save data --
   return(CMP_subset)
   return(TP_subset)
-  return(selected_drugs)
+  return(selectedDrugs)
 
   print("You can find the results in R object under title of CMP_subset and TP_subset.")
 }
@@ -646,7 +650,7 @@ for(j in 1:dim(repositoyr_binary)[1])
 colnames(performance) <- c("TP", "TN", "FP", "FN", "MCC")
 rownames(performance) <- rownames(repositoyr_binary)
 
-selected_drugs <<- which(performance[,5] > 0.1)
+selected_drugs <- which(performance[,5] > 0.1)
 length(selected_drugs)
 
 CMP_subset <<- L1000_MP_profiles[selected_drugs,]
