@@ -73,11 +73,11 @@ geneInteractionNetwrok <- function(number_of_features, lift, confidence, Query_T
   colnames(performance) <- c("TP", "TN", "FP", "FN", "MCC")
   rownames(performance) <- rownames(repositoyr_binary)
 
-  selected_drugs <- which(performance[,5] > 0.1)
+  selected_drugs <<- which(performance[,5] > 0.1)
   length(selected_drugs)
    
-  CMP_subset <- L1000_MP_profiles[selected_drugs,]
-  TP_subset <- L1000_TP_profiles[selected_drugs,]
+  CMP_subset <<- L1000_MP_profiles[selected_drugs,]
+  TP_subset <<- L1000_TP_profiles[selected_drugs,]
   
   #-- Data Normalization [unitization with zero minimum]
   for(l in 1:dim(CMP_subset)[2])
@@ -290,7 +290,7 @@ geneInteractionNetwrok <- function(number_of_features, lift, confidence, Query_T
   
   matrix_of_interactions <- as.matrix(graph_e)
   colnames(matrix_of_interactions) <- c("Source", "Target")
-  matrixOfInteractions <- matrix_of_interactions[!duplicated(matrix_of_interactions),]
+  matrixOfInteractions <<- matrix_of_interactions[!duplicated(matrix_of_interactions),]
   
   # -- Save data --
   return(matrixOfInteractions)
@@ -364,8 +364,8 @@ cellMorphologyEnrichmentAnalysis <- function(number_of_features, Query_Transcrip
   selected_drugs <- which(performance[,5] > 0.1)
   length(selected_drugs)
     
-  CMP_subset <- L1000_MP_profiles[selected_drugs,]
-  TP_subset <- L1000_TP_profiles[selected_drugs,]
+  CMP_subset <<- L1000_MP_profiles[selected_drugs,]
+  TP_subset <<- L1000_TP_profiles[selected_drugs,]
     
   #-- Data Normalization [unitization with zero minimum]
   for(l in 1:dim(CMP_subset)[2])
@@ -476,7 +476,7 @@ cellMorphologyEnrichmentAnalysis <- function(number_of_features, Query_Transcrip
   setDT(agregatation)[, id := .GRP, by = name]
   agregatation <- agregatation[order(agregatation$id, decreasing=FALSE),]
   agregatation$id <- sprintf("Cluster_%d", agregatation$id)
-  cellMorphologyEnrichment <- as.data.frame(agregatation)
+  cellMorphologyEnrichment <<- as.data.frame(agregatation)
   length(cellMorphologyEnrichment$feature)
   
   #-- Save data --
@@ -550,11 +550,11 @@ mappingQueryTranscriptomic <- function(Query_Transcriptomic_Profile, Transcripto
   colnames(performance) <- c("TP", "TN", "FP", "FN", "MCC")
   rownames(performance) <- rownames(repositoyr_binary)
 
-  selected_drugs <- which(performance[,5] > 0.1)
+  selected_drugs <<- which(performance[,5] > 0.1)
   length(selected_drugs)
  
-  CMP_subset <- L1000_MP_profiles[selected_drugs,]
-  TP_subset <- L1000_TP_profiles[selected_drugs,]
+  CMP_subset <<- L1000_MP_profiles[selected_drugs,]
+  TP_subset <<- L1000_TP_profiles[selected_drugs,]
   
   #-- Data Normalization [unitization with zero minimum]
   for(l in 1:dim(CMP_subset)[2])
@@ -646,11 +646,11 @@ for(j in 1:dim(repositoyr_binary)[1])
 colnames(performance) <- c("TP", "TN", "FP", "FN", "MCC")
 rownames(performance) <- rownames(repositoyr_binary)
 
-selected_drugs <- which(performance[,5] > 0.1)
+selected_drugs <<- which(performance[,5] > 0.1)
 length(selected_drugs)
 
-CMP_subset <- L1000_MP_profiles[selected_drugs,]
-TP_subset <- L1000_TP_profiles[selected_drugs,]
+CMP_subset <<- L1000_MP_profiles[selected_drugs,]
+TP_subset <<- L1000_TP_profiles[selected_drugs,]
 
 #-- Data Normalization [unitization with zero minimum]
   for(l in 1:dim(CMP_subset)[2])
@@ -745,8 +745,8 @@ for(i in 1:length(MCR))
 {
   df <- data.frame(matrix(unlist(MCR[[i]]), nrow=1, byrow=TRUE), stringsAsFactors=FALSE)
   df2 <- rep(names(MCR[i]), dim(df)[2])
-  df3 <-  rbind(df,df2)
-  df4 <-  cbind(df3,df4)
+  df3 <- rbind(df,df2)
+  df4 <- cbind(df3,df4)
 }
 
 length(names(MCR))
@@ -808,7 +808,7 @@ MA <- get.adjacency(G1,sparse=FALSE)
 
 MA[M1[,1:2]] <- as.numeric(M1[,3])  #weights
 
-crossTable <- MA[1:length(unique(df6[,1])),-(1:length(unique(df6[,1])))]
+crossTable <<- MA[1:length(unique(df6[,1])),-(1:length(unique(df6[,1])))]
 
 #-- Save data --
 return(CMP_subset)
