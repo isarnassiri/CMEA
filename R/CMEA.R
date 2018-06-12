@@ -110,7 +110,6 @@ geneInteractionNetwrok <- function(number_of_features, lift, confidence, Query_T
   x <- data.matrix(TP_subset)                #predictors
   y <- as.numeric(unlist(x_new2))            #response
 
-  set.seed(1)
 	fit.lasso <- glmnet(x, y, standardize=TRUE)
 
 	#--- select Lambda ------
@@ -397,8 +396,7 @@ cellMorphologyEnrichmentAnalysis <- function(number_of_features, Query_Transcrip
 
     x <- data.matrix(TP_subset)                #predictors
     y <- as.numeric(unlist(x_new2))            #response
-
-    set.seed(1)
+	  
 	fit.lasso <- glmnet(x, y, standardize=TRUE)
 	  
 	#--- select Lambda ------
@@ -687,7 +685,6 @@ for(i in 1:TOP)
     x <- data.matrix(TP_subset)                #predictors
     y <- as.numeric(unlist(x_new2))            #response
 
-    set.seed(1)
 	fit.lasso <- glmnet(x, y, standardize=TRUE)
 	  
 	#--- select Lambda ------
