@@ -34,7 +34,7 @@ The complete data set, including raw and processed data, is available at (https:
 
 ## 3. Mapping query transcriptomic profile against the reference repository
 
-We use the Mapping() function to map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) and detect similar profiles (s). 
+We use the Mapping function to map the query profile (Q) of fold change of gene expression versus reference repository of transcriptomic data (T) and detect similar profiles (s). 
 
 Example of application: identification of similar drugs with the transcription profile of "BRD-K37798499":
 ```{r,}
